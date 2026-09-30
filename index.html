@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -312,6 +311,31 @@ h1{
   font-size:11px;
 }
 
+.member-info{
+  flex:1;
+  min-width:0;
+}
+
+.member-actions{
+  display:flex;
+  gap:4px;
+  margin-left:auto;
+}
+
+.call-btn{
+  width:30px;
+  height:30px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:9px;
+  padding:0;
+  cursor:pointer;
+}
+
+.call-btn:hover{
+  background:#eef2ff;
+}
+
 .add-panel{
   margin-top:15px;
   padding-top:15px;
@@ -395,6 +419,28 @@ h1{
   border-bottom-left-radius:5px;
 }
 
+.message-tools{
+  display:flex;
+  margin-top:4px;
+}
+
+.message.me .message-tools{
+  justify-content:flex-end;
+}
+
+.delete-message{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:11px;
+  padding:2px 5px;
+  cursor:pointer;
+}
+
+.delete-message:hover{
+  color:var(--danger);
+}
+
 .composer{
   padding:15px;
   border-top:1px solid var(--border);
@@ -428,6 +474,7 @@ h1{
   align-items:center;
   justify-content:center;
   padding:20px;
+  z-index:20;
 }
 
 .modal.show{
@@ -454,6 +501,12 @@ h1{
   border-bottom:1px solid var(--border);
 }
 
+.member-row-actions{
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+
 .remove{
   border:0;
   background:#fee2e2;
@@ -476,6 +529,162 @@ h1{
   text-align:center;
   color:var(--muted);
   padding:30px 10px;
+}
+
+/* =========================
+   CALL UI
+========================= */
+
+.call-modal{
+  z-index:50;
+  background:rgba(15,23,42,.72);
+}
+
+.call-window{
+  width:min(900px,100%);
+  height:min(680px,90vh);
+  background:#111827;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 25px 80px rgba(0,0,0,.4);
+}
+
+.call-top{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:5;
+  padding:18px;
+  color:white;
+  background:linear-gradient(
+    rgba(0,0,0,.65),
+    transparent
+  );
+}
+
+.call-name{
+  font-weight:700;
+  font-size:17px;
+}
+
+.call-status{
+  font-size:12px;
+  opacity:.8;
+  margin-top:3px;
+}
+
+.remote-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#111827;
+}
+
+.local-video{
+  position:absolute;
+  right:18px;
+  bottom:95px;
+  width:190px;
+  height:135px;
+  object-fit:cover;
+  background:#111827;
+  border-radius:14px;
+  border:2px solid rgba(255,255,255,.7);
+  z-index:5;
+}
+
+.voice-avatar{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  color:white;
+  z-index:2;
+}
+
+.voice-avatar-circle{
+  width:95px;
+  height:95px;
+  border-radius:50%;
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    #7c3aed
+  );
+  display:grid;
+  place-items:center;
+  font-size:38px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.call-controls{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  display:flex;
+  gap:9px;
+  background:rgba(15,23,42,.75);
+  padding:9px;
+  border-radius:16px;
+}
+
+.call-control{
+  border:0;
+  background:#334155;
+  color:white;
+  min-width:48px;
+  height:48px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.call-control:hover{
+  background:#475569;
+}
+
+.call-control.hangup{
+  background:var(--danger);
+}
+
+.incoming-icon{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    #7c3aed
+  );
+  color:white;
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  margin:0 auto 15px;
+}
+
+.incoming-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.incoming-buttons .btn{
+  flex:1;
+}
+
+.danger-btn{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.danger-btn:hover{
+  background:#fecaca;
 }
 
 @media(max-width:700px){
@@ -503,6 +712,23 @@ h1{
 
   .message-list{
     padding:15px;
+  }
+
+  .local-video{
+    width:125px;
+    height:90px;
+    right:10px;
+    bottom:88px;
+  }
+
+  .call-window{
+    height:85vh;
+    border-radius:15px;
+  }
+
+  .call-controls{
+    width:calc(100% - 20px);
+    justify-content:center;
   }
 
 }
@@ -752,6 +978,9 @@ h1{
 
 </section>
 
+
+<!-- MEMBERS -->
+
 <div
   id="membersModal"
   class="modal"
@@ -774,7 +1003,149 @@ h1{
 
 </div>
 
+
+<!-- INCOMING CALL -->
+
+<div
+  id="incomingCallModal"
+  class="modal"
+>
+
+  <div class="modal-card" style="text-align:center">
+
+    <div
+      id="incomingCallIcon"
+      class="incoming-icon"
+    >
+      📞
+    </div>
+
+    <h2 id="incomingCallTitle">
+      Incoming call
+    </h2>
+
+    <p
+      id="incomingCallText"
+      class="sub"
+      style="margin-bottom:15px"
+    >
+      Someone is calling you.
+    </p>
+
+    <div class="incoming-buttons">
+
+      <button
+        class="btn"
+        onclick="acceptIncomingCall()"
+      >
+        Answer
+      </button>
+
+      <button
+        class="btn danger-btn"
+        onclick="declineIncomingCall()"
+      >
+        Decline
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
+
+
+<!-- ACTIVE CALL -->
+
+<div
+  id="callModal"
+  class="modal call-modal"
+>
+
+  <div class="call-window">
+
+    <div class="call-top">
+
+      <div
+        id="callName"
+        class="call-name"
+      >
+        Call
+      </div>
+
+      <div
+        id="callStatus"
+        class="call-status"
+      >
+        Calling...
+      </div>
+
+    </div>
+
+    <div
+      id="voiceAvatar"
+      class="voice-avatar"
+    >
+
+      <div
+        id="voiceAvatarCircle"
+        class="voice-avatar-circle"
+      >
+        ?
+      </div>
+
+      <div id="voiceAvatarName"></div>
+
+    </div>
+
+    <video
+      id="remoteVideo"
+      class="remote-video"
+      autoplay
+      playsinline
+    ></video>
+
+    <video
+      id="localVideo"
+      class="local-video"
+      autoplay
+      playsinline
+      muted
+    ></video>
+
+    <div class="call-controls">
+
+      <button
+        id="muteButton"
+        class="call-control"
+        onclick="toggleMute()"
+      >
+        🎤
+      </button>
+
+      <button
+        id="cameraButton"
+        class="call-control"
+        onclick="toggleCamera()"
+      >
+        📹
+      </button>
+
+      <button
+        class="call-control hangup"
+        onclick="endCall()"
+      >
+        ☎
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
 
 <script type="module">
 
@@ -794,6 +1165,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  updateDoc,
   deleteDoc,
   collection,
   addDoc,
@@ -842,6 +1214,10 @@ const DEVICE_KEY =
   "mychat_device_v4";
 
 
+const OWNER_UID =
+  "8N4TPzfInFSJe0fFYiLDUok6Vtg2";
+
+
 let firebaseUser = null;
 
 let currentMember = null;
@@ -856,6 +1232,43 @@ let unlockPin = "";
 
 let unsubscribeMessages = null;
 
+
+/* =========================
+   CALL VARIABLES
+========================= */
+
+let unsubscribeCalls = null;
+
+let unsubscribeCallDoc = null;
+
+let unsubscribeRemoteCandidates = null;
+
+let currentCallId = null;
+
+let peerConnection = null;
+
+let localStream = null;
+
+let remoteStream = null;
+
+let currentCallType = null;
+
+let currentCallRole = null;
+
+let incomingCall = null;
+
+let callTarget = null;
+
+let pendingCandidates = [];
+
+let answerApplied = false;
+
+let offerHandled = false;
+
+
+/* =========================
+   FIREBASE
+========================= */
 
 async function startFirebase(){
 
@@ -929,6 +1342,10 @@ window.show = function(id){
 
 };
 
+
+/* =========================
+   ACCESS CODE
+========================= */
 
 window.checkAccessCode = async function(){
 
@@ -1048,6 +1465,10 @@ window.checkAccessCode = async function(){
 };
 
 
+/* =========================
+   NAME
+========================= */
+
 window.saveName = function(){
 
   const input =
@@ -1091,6 +1512,10 @@ window.saveName = function(){
 
 };
 
+
+/* =========================
+   PIN
+========================= */
 
 function buildPad(id,setup){
 
@@ -1226,6 +1651,10 @@ function updateDots(id,pin){
 }
 
 
+/* =========================
+   PIN SETUP
+========================= */
+
 async function finishPinSetup(){
 
   const error =
@@ -1246,17 +1675,6 @@ async function finishPinSetup(){
 
     const code =
       currentMember.code;
-
-    /*
-      IMPORTANT:
-
-      Members are now stored by ACCESS CODE,
-      not Firebase device UID.
-
-      This means the same person can use
-      the same access code on multiple devices
-      without creating duplicate members.
-    */
 
     localStorage.setItem(
       DEVICE_KEY,
@@ -1307,6 +1725,10 @@ async function finishPinSetup(){
 
 }
 
+
+/* =========================
+   UNLOCK
+========================= */
 
 window.unlock = function(){
 
@@ -1367,6 +1789,10 @@ window.unlock = function(){
 };
 
 
+/* =========================
+   OPEN CHAT
+========================= */
+
 function openChat(){
 
   renderMembers();
@@ -1375,10 +1801,16 @@ function openChat(){
 
   startMessageListener();
 
+  startCallListener();
+
   show("chatScreen");
 
 }
 
+
+/* =========================
+   MESSAGES
+========================= */
 
 function startMessageListener(){
 
@@ -1422,33 +1854,82 @@ function startMessageListener(){
             "message" +
             (isMe ? " me" : "");
 
-          element.innerHTML = `
+          const avatar =
+            document.createElement("div");
 
-            <div class="avatar">
-              ${escapeHtml(
-                (message.name || "?")
-                .charAt(0)
-                .toUpperCase()
-              )}
-            </div>
+          avatar.className =
+            "avatar";
 
-            <div class="msg-wrap">
+          avatar.textContent =
+            (message.name || "?")
+              .charAt(0)
+              .toUpperCase();
 
-              <div class="msg-name">
-                ${escapeHtml(
-                  message.name || "Unknown"
-                )}
-              </div>
+          const wrap =
+            document.createElement("div");
 
-              <div class="bubble">
-                ${escapeHtml(
-                  message.text || ""
-                )}
-              </div>
+          wrap.className =
+            "msg-wrap";
 
-            </div>
+          const name =
+            document.createElement("div");
 
-          `;
+          name.className =
+            "msg-name";
+
+          name.textContent =
+            message.name || "Unknown";
+
+          const bubble =
+            document.createElement("div");
+
+          bubble.className =
+            "bubble";
+
+          bubble.textContent =
+            message.text || "";
+
+          wrap.appendChild(name);
+
+          wrap.appendChild(bubble);
+
+
+          /* OWNER DELETE */
+
+          if(isOwner){
+
+            const tools =
+              document.createElement("div");
+
+            tools.className =
+              "message-tools";
+
+            const deleteButton =
+              document.createElement("button");
+
+            deleteButton.className =
+              "delete-message";
+
+            deleteButton.textContent =
+              "🗑 Delete";
+
+            deleteButton.onclick =
+              ()=>deleteMessage(
+                messageDoc.id
+              );
+
+            tools.appendChild(
+              deleteButton
+            );
+
+            wrap.appendChild(tools);
+
+          }
+
+
+          element.appendChild(avatar);
+
+          element.appendChild(wrap);
 
           list.appendChild(element);
 
@@ -1531,6 +2012,55 @@ window.sendMessage = async function(event){
 };
 
 
+/* =========================
+   DELETE MESSAGE
+========================= */
+
+async function deleteMessage(messageId){
+
+  if(!isOwner){
+
+    return;
+
+  }
+
+  if(
+    !confirm(
+      "Delete this message?"
+    )
+  ){
+
+    return;
+
+  }
+
+  try{
+
+    await deleteDoc(
+      doc(
+        db,
+        "messages",
+        messageId
+      )
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Firebase blocked the message deletion."
+    );
+
+  }
+
+}
+
+
+/* =========================
+   MEMBERS
+========================= */
+
 async function getMembers(){
 
   const list = [];
@@ -1550,10 +2080,6 @@ async function getMembers(){
       const member =
         memberDoc.data();
 
-      /*
-        Ignore old broken/blank member records.
-      */
-
       if(
         !member ||
         !member.name ||
@@ -1564,11 +2090,6 @@ async function getMembers(){
         return;
 
       }
-
-      /*
-        Ignore duplicate records for the same
-        access code.
-      */
 
       if(seenCodes.has(member.code)){
 
@@ -1592,6 +2113,62 @@ async function getMembers(){
   }
 
   return list;
+
+}
+
+
+function createCallButtons(member){
+
+  const actions =
+    document.createElement("div");
+
+  actions.className =
+    "member-actions";
+
+
+  const voice =
+    document.createElement("button");
+
+  voice.className =
+    "call-btn";
+
+  voice.title =
+    "Voice call";
+
+  voice.textContent =
+    "📞";
+
+  voice.onclick =
+    ()=>startCall(
+      member,
+      "voice"
+    );
+
+
+  const video =
+    document.createElement("button");
+
+  video.className =
+    "call-btn";
+
+  video.title =
+    "Video call";
+
+  video.textContent =
+    "📹";
+
+  video.onclick =
+    ()=>startCall(
+      member,
+      "video"
+    );
+
+
+  actions.appendChild(voice);
+
+  actions.appendChild(video);
+
+  return actions;
 
 }
 
@@ -1628,33 +2205,68 @@ async function renderMembers(){
     row.className =
       "member";
 
-    row.innerHTML = `
 
-      <div class="avatar">
-        ${escapeHtml(
-          member.name
-          .charAt(0)
-          .toUpperCase()
-        )}
-      </div>
+    const avatar =
+      document.createElement("div");
 
-      <div>
+    avatar.className =
+      "avatar";
 
-        <b>
-          ${escapeHtml(
-            member.name
-          )}
-        </b>
+    avatar.textContent =
+      member.name
+        .charAt(0)
+        .toUpperCase();
 
-        ${
-          member.owner
-          ? "<small>Owner</small>"
-          : ""
-        }
 
-      </div>
+    const info =
+      document.createElement("div");
 
-    `;
+    info.className =
+      "member-info";
+
+    const name =
+      document.createElement("b");
+
+    name.textContent =
+      member.name;
+
+    info.appendChild(name);
+
+
+    if(member.owner){
+
+      const small =
+        document.createElement("small");
+
+      small.textContent =
+        "Owner";
+
+      info.appendChild(small);
+
+    }
+
+
+    row.appendChild(avatar);
+
+    row.appendChild(info);
+
+
+    /*
+      Don't show call buttons beside yourself.
+    */
+
+    if(
+      currentMember &&
+      member.code !==
+        currentMember.code
+    ){
+
+      row.appendChild(
+        createCallButtons(member)
+      );
+
+    }
+
 
     list.appendChild(row);
 
@@ -1687,6 +2299,10 @@ function updateAdminVisibility(){
 
 }
 
+
+/* =========================
+   ADD PERSON
+========================= */
 
 window.addPerson = async function(){
 
@@ -1783,13 +2399,6 @@ window.addPerson = async function(){
       }
     );
 
-    /*
-      Do not create a member yet.
-
-      The person becomes a member when they
-      actually log in with their access code.
-    */
-
     document
       .getElementById(
         "newPersonName"
@@ -1821,6 +2430,10 @@ window.addPerson = async function(){
 
 };
 
+
+/* =========================
+   MEMBERS MODAL
+========================= */
 
 window.openMembers = async function(){
 
@@ -1860,6 +2473,7 @@ window.openMembers = async function(){
     row.className =
       "member-row";
 
+
     const left =
       document.createElement("span");
 
@@ -1873,7 +2487,71 @@ window.openMembers = async function(){
           : ""
       );
 
+
     row.appendChild(left);
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "member-row-actions";
+
+
+    /*
+      Calls in the Members popup.
+    */
+
+    if(
+      currentMember &&
+      member.code !==
+        currentMember.code
+    ){
+
+      const voice =
+        document.createElement("button");
+
+      voice.className =
+        "call-btn";
+
+      voice.textContent =
+        "📞";
+
+      voice.title =
+        "Voice call";
+
+      voice.onclick =
+        ()=>startCall(
+          member,
+          "voice"
+        );
+
+
+      const video =
+        document.createElement("button");
+
+      video.className =
+        "call-btn";
+
+      video.textContent =
+        "📹";
+
+      video.title =
+        "Video call";
+
+      video.onclick =
+        ()=>startCall(
+          member,
+          "video"
+        );
+
+
+      actions.appendChild(voice);
+
+      actions.appendChild(video);
+
+    }
+
 
     if(
       isOwner &&
@@ -1894,9 +2572,12 @@ window.openMembers = async function(){
       remove.onclick =
         ()=>removePerson(member);
 
-      row.appendChild(remove);
+      actions.appendChild(remove);
 
     }
+
+
+    row.appendChild(actions);
 
     box.appendChild(row);
 
@@ -1926,11 +2607,6 @@ window.removePerson = async function(member){
   }
 
   try{
-
-    /*
-      Members are now stored using the
-      access code as the document ID.
-    */
 
     await deleteDoc(
       doc(
@@ -1993,7 +2669,1466 @@ window.openAdmin = function(){
 };
 
 
+/* =========================
+   CALLING
+========================= */
+
+function createPeerConnection(){
+
+  peerConnection =
+    new RTCPeerConnection({
+
+      iceServers:[
+        {
+          urls:
+            "stun:stun.l.google.com:19302"
+        }
+      ]
+
+    });
+
+
+  remoteStream =
+    new MediaStream();
+
+
+  document
+    .getElementById(
+      "remoteVideo"
+    )
+    .srcObject =
+      remoteStream;
+
+
+  peerConnection.ontrack =
+    event=>{
+
+      if(event.streams[0]){
+
+        event.streams[0]
+          .getTracks()
+          .forEach(track=>{
+
+            if(
+              !remoteStream
+                .getTracks()
+                .some(
+                  existing =>
+                    existing.id ===
+                    track.id
+                )
+            ){
+
+              remoteStream.addTrack(
+                track
+              );
+
+            }
+
+          });
+
+      }
+
+    };
+
+
+  peerConnection.onconnectionstatechange =
+    ()=>{
+
+      if(!peerConnection){
+        return;
+      }
+
+      const state =
+        peerConnection.connectionState;
+
+      console.log(
+        "Call state:",
+        state
+      );
+
+
+      if(state === "connected"){
+
+        document
+          .getElementById(
+            "callStatus"
+          )
+          .textContent =
+            "Connected";
+
+      }
+
+
+      if(
+        state === "failed"
+      ){
+
+        alert(
+          "The call connection failed. " +
+          "Try again."
+        );
+
+        cleanupCall();
+
+      }
+
+
+      if(
+        state === "disconnected"
+      ){
+
+        setTimeout(()=>{
+
+          if(
+            peerConnection &&
+            (
+              peerConnection.connectionState ===
+              "disconnected"
+            )
+          ){
+
+            cleanupCall();
+
+          }
+
+        },3000);
+
+      }
+
+    };
+
+}
+
+
+function setupIce(role){
+
+  const collectionName =
+    role === "caller"
+      ? "callerCandidates"
+      : "calleeCandidates";
+
+
+  peerConnection.onicecandidate =
+    async event=>{
+
+      if(
+        !event.candidate ||
+        !currentCallId
+      ){
+
+        return;
+
+      }
+
+      try{
+
+        await addDoc(
+          collection(
+            db,
+            "calls",
+            currentCallId,
+            collectionName
+          ),
+          event.candidate.toJSON()
+        );
+
+      }catch(error){
+
+        console.error(
+          "ICE error:",
+          error
+        );
+
+      }
+
+    };
+
+}
+
+
+function listenForCandidates(collectionName){
+
+  if(unsubscribeRemoteCandidates){
+
+    unsubscribeRemoteCandidates();
+
+  }
+
+  const candidateCollection =
+    collection(
+      db,
+      "calls",
+      currentCallId,
+      collectionName
+    );
+
+
+  unsubscribeRemoteCandidates =
+    onSnapshot(
+      candidateCollection,
+      snapshot=>{
+
+        snapshot.docChanges()
+          .forEach(
+            async change=>{
+
+              if(
+                change.type !== "added"
+              ){
+
+                return;
+
+              }
+
+              const candidate =
+                change.doc.data();
+
+
+              if(
+                peerConnection &&
+                peerConnection.remoteDescription
+              ){
+
+                try{
+
+                  await peerConnection
+                    .addIceCandidate(
+                      candidate
+                    );
+
+                }catch(error){
+
+                  console.error(
+                    "ICE candidate error:",
+                    error
+                  );
+
+                }
+
+              }else{
+
+                pendingCandidates.push(
+                  candidate
+                );
+
+              }
+
+            }
+          );
+
+      }
+    );
+
+}
+
+
+async function flushCandidates(){
+
+  if(
+    !peerConnection ||
+    !peerConnection.remoteDescription
+  ){
+
+    return;
+
+  }
+
+  const candidates =
+    [...pendingCandidates];
+
+  pendingCandidates = [];
+
+
+  for(
+    const candidate
+    of candidates
+  ){
+
+    try{
+
+      await peerConnection
+        .addIceCandidate(
+          candidate
+        );
+
+    }catch(error){
+
+      console.error(
+        "Queued ICE error:",
+        error
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================
+   CALL WINDOW
+========================= */
+
+function showCallWindow(
+  type,
+  name,
+  status
+){
+
+  const modal =
+    document.getElementById(
+      "callModal"
+    );
+
+  const remote =
+    document.getElementById(
+      "remoteVideo"
+    );
+
+  const local =
+    document.getElementById(
+      "localVideo"
+    );
+
+  const avatar =
+    document.getElementById(
+      "voiceAvatar"
+    );
+
+  const camera =
+    document.getElementById(
+      "cameraButton"
+    );
+
+
+  document
+    .getElementById(
+      "callName"
+    )
+    .textContent =
+      type === "video"
+        ? "📹 " + name
+        : "📞 " + name;
+
+
+  document
+    .getElementById(
+      "callStatus"
+    )
+    .textContent =
+      status;
+
+
+  const initial =
+    (name || "?")
+      .charAt(0)
+      .toUpperCase();
+
+
+  document
+    .getElementById(
+      "voiceAvatarCircle"
+    )
+    .textContent =
+      initial;
+
+
+  document
+    .getElementById(
+      "voiceAvatarName"
+    )
+    .textContent =
+      name;
+
+
+  if(type === "video"){
+
+    remote.style.display =
+      "block";
+
+    local.style.display =
+      "block";
+
+    avatar.style.display =
+      "none";
+
+    camera.style.display =
+      "block";
+
+  }else{
+
+    remote.style.display =
+      "block";
+
+    local.style.display =
+      "none";
+
+    avatar.style.display =
+      "flex";
+
+    camera.style.display =
+      "none";
+
+  }
+
+
+  modal.classList.add("show");
+
+}
+
+
+function closeCallWindow(){
+
+  document
+    .getElementById(
+      "callModal"
+    )
+    .classList.remove("show");
+
+  document
+    .getElementById(
+      "remoteVideo"
+    )
+    .srcObject =
+      null;
+
+  document
+    .getElementById(
+      "localVideo"
+    )
+    .srcObject =
+      null;
+
+}
+
+
+/* =========================
+   START CALL
+========================= */
+
+async function startCall(
+  member,
+  type
+){
+
+  if(!member){
+    return;
+  }
+
+  if(
+    !currentMember ||
+    member.code ===
+      currentMember.code
+  ){
+
+    return;
+
+  }
+
+  if(currentCallId){
+
+    alert(
+      "You are already in a call."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ){
+
+    alert(
+      "Your browser cannot access the microphone or camera here. " +
+      "Make sure you are using the HTTPS version of MyChat."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    currentCallType =
+      type;
+
+    currentCallRole =
+      "caller";
+
+    callTarget =
+      member;
+
+
+    localStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+
+          audio:true,
+
+          video:
+            type === "video"
+
+        });
+
+
+    document
+      .getElementById(
+        "localVideo"
+      )
+      .srcObject =
+        localStream;
+
+
+    createPeerConnection();
+
+
+    localStream
+      .getTracks()
+      .forEach(track=>{
+
+        peerConnection.addTrack(
+          track,
+          localStream
+        );
+
+      });
+
+
+    const callRef =
+      doc(
+        collection(
+          db,
+          "calls"
+        )
+      );
+
+
+    currentCallId =
+      callRef.id;
+
+
+    await setDoc(
+      callRef,
+      {
+
+        callerUid:
+          firebaseUser.uid,
+
+        callerName:
+          currentName,
+
+        callerCode:
+          currentMember.code,
+
+        calleeCode:
+          member.code,
+
+        calleeName:
+          member.name,
+
+        type:
+          type,
+
+        status:
+          "ringing",
+
+        createdAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    setupIce("caller");
+
+    listenForCandidates(
+      "calleeCandidates"
+    );
+
+
+    showCallWindow(
+      type,
+      member.name,
+      "Calling..."
+    );
+
+
+    const offer =
+      await peerConnection
+        .createOffer();
+
+
+    await peerConnection
+      .setLocalDescription(
+        offer
+      );
+
+
+    await updateDoc(
+      callRef,
+      {
+
+        offer:{
+          type:
+            offer.type,
+
+          sdp:
+            offer.sdp
+        }
+
+      }
+    );
+
+
+    watchCallerCall(
+      callRef
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Start call:",
+      error
+    );
+
+    alert(
+      "Could not start the call:\n" +
+      error.message
+    );
+
+    cleanupCall();
+
+  }
+
+}
+
+
+function watchCallerCall(callRef){
+
+  if(unsubscribeCallDoc){
+
+    unsubscribeCallDoc();
+
+  }
+
+
+  unsubscribeCallDoc =
+    onSnapshot(
+      callRef,
+      async snapshot=>{
+
+        if(!snapshot.exists()){
+
+          cleanupCall();
+
+          return;
+
+        }
+
+
+        const data =
+          snapshot.data();
+
+
+        if(
+          data.answer &&
+          !answerApplied &&
+          peerConnection
+        ){
+
+          answerApplied =
+            true;
+
+          try{
+
+            await peerConnection
+              .setRemoteDescription(
+                data.answer
+              );
+
+            await flushCandidates();
+
+            document
+              .getElementById(
+                "callStatus"
+              )
+              .textContent =
+                "Connected";
+
+          }catch(error){
+
+            console.error(
+              "Answer error:",
+              error
+            );
+
+          }
+
+        }
+
+
+        if(
+          data.status ===
+          "ended"
+        ){
+
+          cleanupCall();
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================
+   INCOMING CALLS
+========================= */
+
+function startCallListener(){
+
+  if(unsubscribeCalls){
+
+    unsubscribeCalls();
+
+  }
+
+
+  unsubscribeCalls =
+    onSnapshot(
+      collection(db,"calls"),
+      snapshot=>{
+
+        snapshot.docChanges()
+          .forEach(
+            change=>{
+
+              if(
+                change.type !== "added" &&
+                change.type !== "modified"
+              ){
+
+                return;
+
+              }
+
+
+              const data =
+                change.doc.data();
+
+
+              if(
+                !firebaseUser ||
+                !currentMember
+              ){
+
+                return;
+
+              }
+
+
+              if(
+                data.calleeCode !==
+                currentMember.code
+              ){
+
+                return;
+
+              }
+
+
+              if(
+                data.callerUid ===
+                firebaseUser.uid
+              ){
+
+                return;
+
+              }
+
+
+              if(
+                data.status !==
+                "ringing"
+              ){
+
+                return;
+
+              }
+
+
+              if(currentCallId){
+
+                return;
+
+              }
+
+
+              if(
+                incomingCall &&
+                incomingCall.id ===
+                change.doc.id
+              ){
+
+                return;
+
+              }
+
+
+              incomingCall = {
+
+                id:
+                  change.doc.id,
+
+                ...data
+
+              };
+
+
+              showIncomingCall(
+                incomingCall
+              );
+
+            }
+          );
+
+      },
+      error=>{
+
+        console.error(
+          "Call listener:",
+          error
+        );
+
+      }
+    );
+
+}
+
+
+function showIncomingCall(data){
+
+  const icon =
+    document.getElementById(
+      "incomingCallIcon"
+    );
+
+  const title =
+    document.getElementById(
+      "incomingCallTitle"
+    );
+
+  const text =
+    document.getElementById(
+      "incomingCallText"
+    );
+
+
+  if(data.type === "video"){
+
+    icon.textContent =
+      "📹";
+
+    title.textContent =
+      "Incoming video call";
+
+  }else{
+
+    icon.textContent =
+      "📞";
+
+    title.textContent =
+      "Incoming voice call";
+
+  }
+
+
+  text.textContent =
+    (
+      data.callerName ||
+      "Someone"
+    ) +
+    " is calling you.";
+
+
+  document
+    .getElementById(
+      "incomingCallModal"
+    )
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   ACCEPT CALL
+========================= */
+
+window.acceptIncomingCall =
+async function(){
+
+  if(!incomingCall){
+    return;
+  }
+
+  if(currentCallId){
+    return;
+  }
+
+
+  const callData =
+    incomingCall;
+
+  incomingCall = null;
+
+
+  document
+    .getElementById(
+      "incomingCallModal"
+    )
+    .classList.remove("show");
+
+
+  try{
+
+    currentCallId =
+      callData.id;
+
+    currentCallRole =
+      "callee";
+
+    currentCallType =
+      callData.type;
+
+    callTarget = {
+
+      code:
+        callData.callerCode,
+
+      name:
+        callData.callerName
+
+    };
+
+
+    localStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+
+          audio:true,
+
+          video:
+            callData.type ===
+            "video"
+
+        });
+
+
+    document
+      .getElementById(
+        "localVideo"
+      )
+      .srcObject =
+        localStream;
+
+
+    createPeerConnection();
+
+
+    localStream
+      .getTracks()
+      .forEach(track=>{
+
+        peerConnection.addTrack(
+          track,
+          localStream
+        );
+
+      });
+
+
+    setupIce("callee");
+
+    listenForCandidates(
+      "callerCandidates"
+    );
+
+
+    showCallWindow(
+      callData.type,
+      callData.callerName,
+      "Connecting..."
+    );
+
+
+    const callRef =
+      doc(
+        db,
+        "calls",
+        currentCallId
+      );
+
+
+    watchCalleeCall(
+      callRef
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Accept call:",
+      error
+    );
+
+    alert(
+      "Could not answer the call:\n" +
+      error.message
+    );
+
+    cleanupCall();
+
+  }
+
+};
+
+
+function watchCalleeCall(callRef){
+
+  if(unsubscribeCallDoc){
+
+    unsubscribeCallDoc();
+
+  }
+
+
+  unsubscribeCallDoc =
+    onSnapshot(
+      callRef,
+      async snapshot=>{
+
+        if(!snapshot.exists()){
+
+          cleanupCall();
+
+          return;
+
+        }
+
+
+        const data =
+          snapshot.data();
+
+
+        if(
+          data.status ===
+          "ended"
+        ){
+
+          cleanupCall();
+
+          return;
+
+        }
+
+
+        if(
+          data.offer &&
+          !offerHandled &&
+          peerConnection
+        ){
+
+          offerHandled =
+            true;
+
+          try{
+
+            await peerConnection
+              .setRemoteDescription(
+                data.offer
+              );
+
+
+            await flushCandidates();
+
+
+            const answer =
+              await peerConnection
+                .createAnswer();
+
+
+            await peerConnection
+              .setLocalDescription(
+                answer
+              );
+
+
+            await updateDoc(
+              callRef,
+              {
+
+                answer:{
+                  type:
+                    answer.type,
+
+                  sdp:
+                    answer.sdp
+                },
+
+                status:
+                  "connected"
+
+              }
+            );
+
+
+            document
+              .getElementById(
+                "callStatus"
+              )
+              .textContent =
+                "Connected";
+
+
+          }catch(error){
+
+            console.error(
+              "Offer error:",
+              error
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================
+   DECLINE
+========================= */
+
+window.declineIncomingCall =
+async function(){
+
+  if(!incomingCall){
+    return;
+  }
+
+  const id =
+    incomingCall.id;
+
+  incomingCall = null;
+
+
+  document
+    .getElementById(
+      "incomingCallModal"
+    )
+    .classList.remove("show");
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "calls",
+        id
+      ),
+      {
+
+        status:
+          "ended"
+
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Decline call:",
+      error
+    );
+
+  }
+
+};
+
+
+/* =========================
+   MUTE
+========================= */
+
+window.toggleMute = function(){
+
+  if(!localStream){
+    return;
+  }
+
+
+  const tracks =
+    localStream
+      .getAudioTracks();
+
+
+  if(!tracks.length){
+    return;
+  }
+
+
+  const currentlyEnabled =
+    tracks[0].enabled;
+
+
+  tracks.forEach(
+    track=>{
+      track.enabled =
+        !currentlyEnabled;
+    }
+  );
+
+
+  document
+    .getElementById(
+      "muteButton"
+    )
+    .textContent =
+      currentlyEnabled
+        ? "🔇"
+        : "🎤";
+
+};
+
+
+/* =========================
+   CAMERA
+========================= */
+
+window.toggleCamera = function(){
+
+  if(!localStream){
+    return;
+  }
+
+
+  const tracks =
+    localStream
+      .getVideoTracks();
+
+
+  if(!tracks.length){
+    return;
+  }
+
+
+  const currentlyEnabled =
+    tracks[0].enabled;
+
+
+  tracks.forEach(
+    track=>{
+      track.enabled =
+        !currentlyEnabled;
+    }
+  );
+
+
+  document
+    .getElementById(
+      "cameraButton"
+    )
+    .textContent =
+      currentlyEnabled
+        ? "🚫"
+        : "📹";
+
+};
+
+
+/* =========================
+   END CALL
+========================= */
+
+window.endCall =
+async function(){
+
+  if(currentCallId){
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "calls",
+          currentCallId
+        ),
+        {
+
+          status:
+            "ended"
+
+        }
+      );
+
+    }catch(error){
+
+      console.error(
+        "End call:",
+        error
+      );
+
+    }
+
+  }
+
+
+  cleanupCall();
+
+};
+
+
+/* =========================
+   CLEANUP
+========================= */
+
+function cleanupCall(){
+
+  if(unsubscribeCallDoc){
+
+    unsubscribeCallDoc();
+
+    unsubscribeCallDoc =
+      null;
+
+  }
+
+
+  if(unsubscribeRemoteCandidates){
+
+    unsubscribeRemoteCandidates();
+
+    unsubscribeRemoteCandidates =
+      null;
+
+  }
+
+
+  if(localStream){
+
+    localStream
+      .getTracks()
+      .forEach(
+        track=>{
+          track.stop();
+        }
+      );
+
+    localStream =
+      null;
+
+  }
+
+
+  if(peerConnection){
+
+    try{
+
+      peerConnection.close();
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+    peerConnection =
+      null;
+
+  }
+
+
+  if(remoteStream){
+
+    remoteStream
+      .getTracks()
+      .forEach(
+        track=>{
+          track.stop();
+        }
+      );
+
+    remoteStream =
+      null;
+
+  }
+
+
+  currentCallId =
+    null;
+
+  currentCallType =
+    null;
+
+  currentCallRole =
+    null;
+
+  callTarget =
+    null;
+
+  pendingCandidates =
+    [];
+
+  answerApplied =
+    false;
+
+  offerHandled =
+    false;
+
+
+  document
+    .getElementById(
+      "muteButton"
+    )
+    .textContent =
+      "🎤";
+
+
+  document
+    .getElementById(
+      "cameraButton"
+    )
+    .textContent =
+      "📹";
+
+
+  closeCallWindow();
+
+}
+
+
+/* =========================
+   LOCK
+========================= */
+
 window.lockApp = function(){
+
+  if(currentCallId){
+
+    endCall();
+
+  }
+
 
   const saved =
     JSON.parse(
@@ -2023,6 +4158,10 @@ window.lockApp = function(){
 };
 
 
+/* =========================
+   RESET
+========================= */
+
 window.resetThisDevice = function(){
 
   if(
@@ -2030,6 +4169,12 @@ window.resetThisDevice = function(){
       "Reset this device? You will need an access code again."
     )
   ){
+
+    if(currentCallId){
+
+      endCall();
+
+    }
 
     localStorage.removeItem(
       DEVICE_KEY
@@ -2041,6 +4186,10 @@ window.resetThisDevice = function(){
 
 };
 
+
+/* =========================
+   ESCAPE HTML
+========================= */
 
 function escapeHtml(value){
 
@@ -2059,6 +4208,10 @@ function escapeHtml(value){
 
 }
 
+
+/* =========================
+   INIT
+========================= */
 
 async function init(){
 
@@ -2093,4 +4246,3 @@ init();
 
 </body>
 </html>
-```

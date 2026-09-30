@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -507,7 +507,6 @@ h1{
 
 }
 </style>
-
 </head>
 
 <body>
@@ -518,36 +517,34 @@ h1{
 
   <div class="auth-card">
 
-```
-<div class="logo">M</div>
+    <div class="logo">M</div>
 
-<h1>Welcome to MyChat</h1>
+    <h1>Welcome to MyChat</h1>
 
-<p class="sub">
-  Enter your 6-digit access code to join the group.
-</p>
+    <p class="sub">
+      Enter your 6-digit access code to join the group.
+    </p>
 
-<input
-  id="accessCode"
-  class="code-box"
-  maxlength="6"
-  inputmode="numeric"
-  autocomplete="one-time-code"
-  placeholder="000000"
->
+    <input
+      id="accessCode"
+      class="code-box"
+      maxlength="6"
+      inputmode="numeric"
+      autocomplete="one-time-code"
+      placeholder="000000"
+    >
 
-<div id="joinError" class="error"></div>
+    <div id="joinError" class="error"></div>
 
-<div id="joinLoading" class="loading"></div>
+    <div id="joinLoading" class="loading"></div>
 
-<button
-  id="continueButton"
-  class="btn"
-  onclick="checkAccessCode()"
->
-  Continue
-</button>
-```
+    <button
+      id="continueButton"
+      class="btn"
+      onclick="checkAccessCode()"
+    >
+      Continue
+    </button>
 
   </div>
 
@@ -557,29 +554,27 @@ h1{
 
   <div class="auth-card">
 
-```
-<div class="logo">M</div>
+    <div class="logo">M</div>
 
-<h1>What's your name?</h1>
+    <h1>What's your name?</h1>
 
-<p class="sub">
-  This is the name other people will see in the chat.
-</p>
+    <p class="sub">
+      This is the name other people will see in the chat.
+    </p>
 
-<input
-  id="displayName"
-  class="code-box name-box"
-  maxlength="30"
-  autocomplete="name"
-  placeholder="Your name"
->
+    <input
+      id="displayName"
+      class="code-box name-box"
+      maxlength="30"
+      autocomplete="name"
+      placeholder="Your name"
+    >
 
-<div id="nameError" class="error"></div>
+    <div id="nameError" class="error"></div>
 
-<button class="btn" onclick="saveName()">
-  Continue
-</button>
-```
+    <button class="btn" onclick="saveName()">
+      Continue
+    </button>
 
   </div>
 
@@ -589,24 +584,22 @@ h1{
 
   <div class="auth-card">
 
-```
-<div class="logo">🔒</div>
+    <div class="logo">🔒</div>
 
-<h1>Create your PIN</h1>
+    <h1>Create your PIN</h1>
 
-<p class="sub">
-  Choose a 4-digit PIN for this device.
-  You won't need the access code on this device again.
-</p>
+    <p class="sub">
+      Choose a 4-digit PIN for this device.
+      You won't need the access code on this device again.
+    </p>
 
-<div id="setupDots" class="pin-dots">
-  ○ ○ ○ ○
-</div>
+    <div id="setupDots" class="pin-dots">
+      ○ ○ ○ ○
+    </div>
 
-<div id="setupPad" class="pin-pad"></div>
+    <div id="setupPad" class="pin-pad"></div>
 
-<div id="pinSetupError" class="error"></div>
-```
+    <div id="pinSetupError" class="error"></div>
 
   </div>
 
@@ -616,27 +609,25 @@ h1{
 
   <div class="auth-card">
 
-```
-<div class="logo">🔒</div>
+    <div class="logo">🔒</div>
 
-<h1>Welcome back</h1>
+    <h1>Welcome back</h1>
 
-<p class="sub">
-  Enter your 4-digit PIN to unlock MyChat.
-</p>
+    <p class="sub">
+      Enter your 4-digit PIN to unlock MyChat.
+    </p>
 
-<div id="unlockDots" class="pin-dots">
-  ○ ○ ○ ○
-</div>
+    <div id="unlockDots" class="pin-dots">
+      ○ ○ ○ ○
+    </div>
 
-<div id="unlockPad" class="pin-pad"></div>
+    <div id="unlockPad" class="pin-pad"></div>
 
-<div id="pinError" class="error"></div>
+    <div id="pinError" class="error"></div>
 
-<button class="btn secondary" onclick="resetThisDevice()">
-  Reset this device
-</button>
-```
+    <button class="btn secondary" onclick="resetThisDevice()">
+      Reset this device
+    </button>
 
   </div>
 
@@ -646,121 +637,116 @@ h1{
 
   <header class="topbar">
 
-```
-<div class="brand">
+    <div class="brand">
 
-  <div class="mini-logo">M</div>
+      <div class="mini-logo">M</div>
 
-  <div>
-    <strong>MyChat</strong>
-    <div class="online">● Group chat</div>
-  </div>
+      <div>
+        <strong>MyChat</strong>
+        <div class="online">● Group chat</div>
+      </div>
 
-</div>
+    </div>
 
-<div class="top-actions">
+    <div class="top-actions">
 
-  <button
-    class="small-btn"
-    onclick="openMembers()"
-  >
-    👥 Members
-  </button>
+      <button
+        class="small-btn"
+        onclick="openMembers()"
+      >
+        👥 Members
+      </button>
 
-  <button
-    id="adminButton"
-    class="small-btn"
-    onclick="openAdmin()"
-    style="display:none"
-  >
-    ⚙ Admin
-  </button>
+      <button
+        id="adminButton"
+        class="small-btn"
+        onclick="openAdmin()"
+        style="display:none"
+      >
+        ⚙ Admin
+      </button>
 
-  <button
-    class="small-btn"
-    onclick="lockApp()"
-  >
-    🔒 Lock
-  </button>
+      <button
+        class="small-btn"
+        onclick="lockApp()"
+      >
+        🔒 Lock
+      </button>
 
-</div>
-```
+    </div>
 
   </header>
 
   <div class="chat-body">
 
-```
-<aside class="sidebar">
+    <aside class="sidebar">
 
-  <h3>Members</h3>
+      <h3>Members</h3>
 
-  <div id="memberList"></div>
+      <div id="memberList"></div>
 
-  <div
-    id="adminPanel"
-    class="add-panel"
-    style="display:none"
-  >
+      <div
+        id="adminPanel"
+        class="add-panel"
+        style="display:none"
+      >
 
-    <b>👑 Owner controls</b>
+        <b>👑 Owner controls</b>
 
-    <input
-      id="newPersonName"
-      maxlength="30"
-      placeholder="Person's name"
-    >
+        <input
+          id="newPersonName"
+          maxlength="30"
+          placeholder="Person's name"
+        >
 
-    <input
-      id="newPersonCode"
-      maxlength="6"
-      inputmode="numeric"
-      placeholder="6-digit code"
-    >
+        <input
+          id="newPersonCode"
+          maxlength="6"
+          inputmode="numeric"
+          placeholder="6-digit code"
+        >
 
-    <button
-      class="btn"
-      onclick="addPerson()"
-    >
-      + Add Person
-    </button>
+        <button
+          class="btn"
+          onclick="addPerson()"
+        >
+          + Add Person
+        </button>
 
-    <div class="notice">
-      Only the owner can add or remove people.
-    </div>
+        <div class="notice">
+          Only the owner can add or remove people.
+        </div>
 
-  </div>
+      </div>
 
-</aside>
+    </aside>
 
+    <main class="messages">
 
-<main class="messages">
+      <div
+        id="messageList"
+        class="message-list"
+      ></div>
 
-  <div
-    id="messageList"
-    class="message-list"
-  ></div>
+      <form
+        class="composer"
+        onsubmit="sendMessage(event)"
+      >
 
-  <form
-    class="composer"
-    onsubmit="sendMessage(event)"
-  >
+        <input
+          id="messageInput"
+          autocomplete="off"
+          maxlength="1000"
+          placeholder="Type a message..."
+        >
 
-    <input
-      id="messageInput"
-      autocomplete="off"
-      maxlength="1000"
-      placeholder="Type a message..."
-    >
+        <button>
+          Send
+        </button>
 
-    <button>
-      Send
-    </button>
+      </form>
 
-  </form>
-
-</main>
-```
+    </main>
 
   </div>
 
@@ -773,18 +759,16 @@ h1{
 
   <div class="modal-card">
 
-```
-<button
-  class="close"
-  onclick="closeModal('membersModal')"
->
-  ✕
-</button>
+    <button
+      class="close"
+      onclick="closeModal('membersModal')"
+    >
+      ✕
+    </button>
 
-<h2>👥 Members</h2>
+    <h2>👥 Members</h2>
 
-<div id="modalMembers"></div>
-```
+    <div id="modalMembers"></div>
 
   </div>
 
@@ -855,7 +839,7 @@ const db =
 
 
 const DEVICE_KEY =
-  "mychat_device_v3";
+  "mychat_device_v4";
 
 
 let firebaseUser = null;
@@ -1263,6 +1247,17 @@ async function finishPinSetup(){
     const code =
       currentMember.code;
 
+    /*
+      IMPORTANT:
+
+      Members are now stored by ACCESS CODE,
+      not Firebase device UID.
+
+      This means the same person can use
+      the same access code on multiple devices
+      without creating duplicate members.
+    */
+
     localStorage.setItem(
       DEVICE_KEY,
       JSON.stringify({
@@ -1281,18 +1276,16 @@ async function finishPinSetup(){
     );
 
     await setDoc(
-      doc(db,"members",firebaseUser.uid),
+      doc(db,"members",code),
       {
 
-        uid:firebaseUser.uid,
+        code:code,
 
         name:currentName,
 
         owner:isOwner,
 
         active:true,
-
-        code:code,
 
         createdAt:serverTimestamp()
 
@@ -1335,6 +1328,16 @@ window.unlock = function(){
 
     isOwner =
       !!saved.owner;
+
+    currentMember = {
+
+      code:saved.code,
+
+      name:saved.name,
+
+      owner:!!saved.owner
+
+    };
 
     unlockPin = "";
 
@@ -1539,11 +1542,43 @@ async function getMembers(){
         collection(db,"members")
       );
 
+    const seenCodes =
+      new Set();
+
     snapshot.forEach(memberDoc=>{
 
-      list.push(
-        memberDoc.data()
-      );
+      const member =
+        memberDoc.data();
+
+      /*
+        Ignore old broken/blank member records.
+      */
+
+      if(
+        !member ||
+        !member.name ||
+        !member.name.trim() ||
+        !member.code
+      ){
+
+        return;
+
+      }
+
+      /*
+        Ignore duplicate records for the same
+        access code.
+      */
+
+      if(seenCodes.has(member.code)){
+
+        return;
+
+      }
+
+      seenCodes.add(member.code);
+
+      list.push(member);
 
     });
 
@@ -1597,7 +1632,7 @@ async function renderMembers(){
 
       <div class="avatar">
         ${escapeHtml(
-          (member.name || "?")
+          member.name
           .charAt(0)
           .toUpperCase()
         )}
@@ -1607,7 +1642,7 @@ async function renderMembers(){
 
         <b>
           ${escapeHtml(
-            member.name || "Unknown"
+            member.name
           )}
         </b>
 
@@ -1656,7 +1691,13 @@ function updateAdminVisibility(){
 window.addPerson = async function(){
 
   if(!isOwner){
+
+    alert(
+      "Only the owner can add people."
+    );
+
     return;
+
   }
 
   const name =
@@ -1689,6 +1730,16 @@ window.addPerson = async function(){
 
     alert(
       "The access code must be 6 digits."
+    );
+
+    return;
+
+  }
+
+  if(code === "190115"){
+
+    alert(
+      "190115 is reserved for the owner."
     );
 
     return;
@@ -1732,6 +1783,13 @@ window.addPerson = async function(){
       }
     );
 
+    /*
+      Do not create a member yet.
+
+      The person becomes a member when they
+      actually log in with their access code.
+    */
+
     document
       .getElementById(
         "newPersonName"
@@ -1744,6 +1802,8 @@ window.addPerson = async function(){
       )
       .value = "";
 
+    await renderMembers();
+
     alert(
       name +
       " has been added."
@@ -1754,7 +1814,7 @@ window.addPerson = async function(){
     console.error(error);
 
     alert(
-      "Firebase blocked this action."
+      "Firebase blocked this action. Check the Firestore rules."
     );
 
   }
@@ -1805,7 +1865,7 @@ window.openMembers = async function(){
 
     left.innerHTML =
       `👤 <b>${escapeHtml(
-        member.name || "Unknown"
+        member.name
       )}</b>` +
       (
         member.owner
@@ -1867,11 +1927,16 @@ window.removePerson = async function(member){
 
   try{
 
+    /*
+      Members are now stored using the
+      access code as the document ID.
+    */
+
     await deleteDoc(
       doc(
         db,
         "members",
-        member.uid
+        member.code
       )
     );
 
@@ -1887,9 +1952,9 @@ window.removePerson = async function(member){
 
     }
 
-    openMembers();
+    await openMembers();
 
-    renderMembers();
+    await renderMembers();
 
   }catch(error){
 
@@ -2028,3 +2093,4 @@ init();
 
 </body>
 </html>
+```

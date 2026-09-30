@@ -42,7 +42,6 @@ h1{margin:0 0 8px;font-size:30px}.sub{color:var(--muted);margin:0 0 28px}
 .btn:hover{background:var(--primary2);transform:translateY(-1px)}
 .secondary{background:#eef2ff;color:#3730a3}.secondary:hover{background:#e0e7ff}
 .error{color:var(--danger);min-height:22px;margin-top:10px;font-size:14px}
-.demo-code{margin-top:18px;padding:12px;background:#f8fafc;border-radius:12px;color:var(--muted);font-size:13px}
 .pin-dots{font-size:30px;letter-spacing:10px;min-height:45px;margin:14px 0}
 .pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:280px;margin:0 auto}
 .pin-pad button{border:1px solid var(--border);background:#fff;border-radius:14px;padding:15px;font-size:20px;cursor:pointer}
@@ -80,6 +79,7 @@ h1{margin:0 0 8px;font-size:30px}.sub{color:var(--muted);margin:0 0 28px}
 .msg-wrap{max-width:min(70%,520px)}.msg-name{font-size:12px;color:var(--muted);margin:0 0 4px 3px}
 .me .msg-name{text-align:right;margin-right:3px}.bubble{background:var(--bubble);padding:11px 14px;border-radius:16px;line-height:1.4}
 .me .bubble{background:#2563eb;color:white;border-bottom-right-radius:5px}.message:not(.me) .bubble{border-bottom-left-radius:5px}
+
 .composer{padding:15px;border-top:1px solid var(--border);display:flex;gap:9px}
 .composer input{flex:1;border:1px solid var(--border);border-radius:13px;padding:13px 15px;outline:none}
 .composer button{border:0;border-radius:13px;background:var(--primary);color:#fff;padding:0 20px;font-weight:700;cursor:pointer}
@@ -109,7 +109,6 @@ h1{margin:0 0 8px;font-size:30px}.sub{color:var(--muted);margin:0 0 28px}
       <input id="accessCode" class="code-box" maxlength="6" inputmode="numeric" placeholder="000000">
       <div id="joinError" class="error"></div>
       <button class="btn" onclick="checkAccessCode()">Continue</button>
-      <div class="demo-code">Prototype owner code: <b>583214</b></div>
     </div>
   </section>
 
@@ -171,7 +170,7 @@ h1{margin:0 0 8px;font-size:30px}.sub{color:var(--muted);margin:0 0 28px}
           <input id="newPersonName" placeholder="Person's name">
           <input id="newPersonCode" maxlength="6" inputmode="numeric" placeholder="6-digit code">
           <button class="btn" onclick="addPerson()">+ Add Person</button>
-          <div class="notice">Only the owner can add or remove people. In this prototype, the owner is the first device using the owner code.</div>
+          <div class="notice">Only the owner can add or remove people. In this prototype, the owner is the device using the owner code.</div>
         </div>
       </aside>
 
@@ -205,6 +204,7 @@ let currentName = "";
 let isOwner = false;
 let setupPin = "";
 let unlockPin = "";
+let currentAccessCode = "";
 
 const defaultMembers = [
   {name:"Nathan", code:"583214", owner:true},
@@ -236,10 +236,9 @@ function checkAccessCode(){
   const code=document.getElementById("accessCode").value.replace(/\D/g,"");
   const err=document.getElementById("joinError");
   if(code.length!==6){err.textContent="Please enter a 6-digit code.";return}
-  if(code!==OWNER_CODE && !getMembers().some(m=>m.code===code)){
-    err.textContent="That access code isn't recognised in this prototype.";return
-  }
+  // Owner if matches OWNER_CODE, otherwise member
   isOwner=(code===OWNER_CODE);
+  currentAccessCode=code;
   err.textContent="";
   document.getElementById("accessCode").value="";
   show("nameScreen");
@@ -286,9 +285,12 @@ function updateDots(id,pin){
   document.getElementById(id).textContent=[0,1,2,3].map(i=>i<pin.length?"●":"○").join(" ");
 }
 function finishPinSetup(){
-  localStorage.setItem(DEVICE_KEY,JSON.stringify({name:currentName,pin:setupPin,owner:isOwner}));
-  if(!getMembers().some(m=>m.name===currentName && m.code===OWNER_CODE) && isOwner){
-    const ms=getMembers(); ms[0]={name:currentName,code:OWNER_CODE,owner:true}; saveMembers(ms);
+  localStorage.setItem(DEVICE_KEY,JSON.stringify({name:currentName,pin:setupPin,owner:isOwner,code:currentAccessCode}));
+  // Ensure owner appears as first member
+  if(isOwner){
+    const ms=getMembers();
+    ms[0]={name:currentName,code:OWNER_CODE,owner:true};
+    saveMembers(ms);
   }
   openChat();
 }
@@ -296,7 +298,7 @@ function unlock(){
   const saved=JSON.parse(localStorage.getItem(DEVICE_KEY)||"null");
   const err=document.getElementById("pinError");
   if(saved && unlockPin===saved.pin){
-    currentName=saved.name; isOwner=!!saved.owner; unlockPin=""; err.textContent=""; openChat();
+    currentName=saved.name; isOwner=!!saved.owner; currentAccessCode=saved.code || ""; unlockPin=""; err.textContent=""; openChat();
   }else{
     err.textContent="Incorrect PIN."; unlockPin=""; updateDots("unlockDots","");
   }
@@ -374,6 +376,8 @@ function escapeHtml(s){
 (function init(){
   if(localStorage.getItem(DEVICE_KEY)){
     buildPad("unlockPad",false); show("pinScreen");
+  }else{
+    show("joinScreen");
   }
 })();
 </script>

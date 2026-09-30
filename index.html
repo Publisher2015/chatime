@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +19,17 @@
   --green:#22c55e;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+}
 
 body{
-  margin:0;
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:linear-gradient(135deg,#dbeafe,#f8fafc 55%,#e0e7ff);
   color:var(--text);
@@ -35,6 +41,10 @@ body{
 
 button,input{
   font:inherit;
+}
+
+button{
+  cursor:pointer;
 }
 
 .app{
@@ -91,7 +101,8 @@ h1{
   margin:0 0 28px;
 }
 
-.code-box{
+.code-box,
+.pin-box{
   border:1px solid var(--border);
   border-radius:16px;
   padding:16px;
@@ -101,6 +112,12 @@ h1{
   width:100%;
   outline:none;
   background:#f8fafc;
+}
+
+.code-box:focus,
+.name-box:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
 
 .name-box{
@@ -126,6 +143,12 @@ h1{
   transform:translateY(-1px);
 }
 
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
 .secondary{
   background:#eef2ff;
   color:#3730a3;
@@ -140,6 +163,19 @@ h1{
   min-height:22px;
   margin-top:10px;
   font-size:14px;
+}
+
+.success{
+  color:var(--green);
+  min-height:22px;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.loading{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:12px;
 }
 
 .pin-dots{
@@ -266,6 +302,7 @@ h1{
   place-items:center;
   background:#e2e8f0;
   font-weight:700;
+  flex-shrink:0;
 }
 
 .member small{
@@ -344,6 +381,7 @@ h1{
   padding:11px 14px;
   border-radius:16px;
   line-height:1.4;
+  word-break:break-word;
 }
 
 .me .bubble{
@@ -379,12 +417,6 @@ h1{
   padding:0 20px;
   font-weight:700;
   cursor:pointer;
-}
-
-.status{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:12px;
 }
 
 .modal{
@@ -439,8 +471,13 @@ h1{
   cursor:pointer;
 }
 
-@media(max-width:700px){
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:30px 10px;
+}
 
+@media(max-width:700px){
   .app{
     height:100vh;
     border-radius:0;
@@ -473,239 +510,1716 @@ h1{
 
 <div class="app">
 
-<!-- LOGIN -->
-<section id="joinScreen" class="screen active center">
+  <!-- JOIN -->
+  <section id="joinScreen" class="screen active center">
+    <div class="auth-card">
 
-  <div class="auth-card">
+      <div class="logo">M</div>
 
-    <div class="logo">M</div>
+      <h1>Welcome to MyChat</h1>
 
-    <h1>Welcome to MyChat</h1>
+      <p class="sub">
+        Enter your 6-digit access code to join the group.
+      </p>
 
-    <p class="sub">
-      Enter the access code you were given.
-    </p>
+      <input
+        id="accessCode"
+        class="code-box"
+        maxlength="6"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        placeholder="000000"
+      >
 
-    <input
-      id="accessCode"
-      class="code-box"
-      maxlength="6"
-      inputmode="numeric"
-      autocomplete="one-time-code"
-      placeholder="000000"
-    >
+      <div id="joinError" class="error"></div>
 
-    <div id="joinError" class="error"></div>
-
-    <button class="btn" onclick="checkAccessCode()">
-      Continue
-    </button>
-
-    <!-- NO ACCESS CODE IS DISPLAYED HERE -->
-
-  </div>
-
-</section>
-
-
-<!-- NAME -->
-<section id="nameScreen" class="screen center">
-
-  <div class="auth-card">
-
-    <div class="logo">M</div>
-
-    <h1>What's your name?</h1>
-
-    <p class="sub">
-      This is the name people will see in the group.
-    </p>
-
-    <input
-      id="displayName"
-      class="code-box name-box"
-      maxlength="30"
-      autocomplete="name"
-      placeholder="Your name"
-    >
-
-    <div id="nameError" class="error"></div>
-
-    <button class="btn" onclick="saveName()">
-      Continue
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- PIN SETUP -->
-<section id="pinSetupScreen" class="screen center">
-
-  <div class="auth-card">
-
-    <div class="logo">🔒</div>
-
-    <h1>Create your PIN</h1>
-
-    <p class="sub">
-      Choose a 4-digit PIN for this device.
-    </p>
-
-    <div id="setupDots" class="pin-dots">
-      ○ ○ ○ ○
-    </div>
-
-    <div id="setupPad" class="pin-pad"></div>
-
-    <div id="pinSetupError" class="error"></div>
-
-  </div>
-
-</section>
-
-
-<!-- PIN LOGIN -->
-<section id="pinScreen" class="screen center">
-
-  <div class="auth-card">
-
-    <div class="logo">🔒</div>
-
-    <h1>Welcome back</h1>
-
-    <p class="sub">
-      Enter your 4-digit PIN to unlock MyChat.
-    </p>
-
-    <div id="unlockDots" class="pin-dots">
-      ○ ○ ○ ○
-    </div>
-
-    <div id="unlockPad" class="pin-pad"></div>
-
-    <div id="pinError" class="error"></div>
-
-    <button class="btn secondary" onclick="resetThisDevice()">
-      Reset this device
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- CHAT -->
-<section id="chatScreen" class="screen chat-screen">
-
-  <header class="topbar">
-
-    <div class="brand">
-
-      <div class="mini-logo">M</div>
-
-      <div>
-        <strong>MyChat</strong>
-        <div class="online">
-          ● Connected
-        </div>
-      </div>
-
-    </div>
-
-    <div class="top-actions">
-
-      <button class="small-btn" onclick="openMembers()">
-        👥 Members
-      </button>
+      <div id="joinLoading" class="loading"></div>
 
       <button
-        id="adminButton"
-        class="small-btn"
-        onclick="openAdmin()"
-        style="display:none"
+        id="continueButton"
+        class="btn"
+        onclick="checkAccessCode()"
       >
-        ⚙ Admin
-      </button>
-
-      <button class="small-btn" onclick="lockApp()">
-        🔒 Lock
+        Continue
       </button>
 
     </div>
+  </section>
 
-  </header>
 
+  <!-- NAME -->
+  <section id="nameScreen" class="screen center">
+    <div class="auth-card">
 
-  <div class="chat-body">
+      <div class="logo">M</div>
 
-    <aside class="sidebar">
+      <h1>What's your name?</h1>
 
-      <h3>Members</h3>
+      <p class="sub">
+        This is the name other people will see in the chat.
+      </p>
 
-      <div id="memberList"></div>
-
-      <div
-        id="adminPanel"
-        class="add-panel"
-        style="display:none"
+      <input
+        id="displayName"
+        class="code-box name-box"
+        maxlength="30"
+        autocomplete="name"
+        placeholder="Your name"
       >
 
-        <b>👑 Owner controls</b>
+      <div id="nameError" class="error"></div>
 
-        <input
-          id="newPersonName"
-          placeholder="Person's name"
-          maxlength="30"
-        >
+      <button class="btn" onclick="saveName()">
+        Continue
+      </button>
 
-        <input
-          id="newPersonCode"
-          maxlength="6"
-          inputmode="numeric"
-          placeholder="6-digit access code"
-        >
+    </div>
+  </section>
 
-        <button class="btn" onclick="addPerson()">
-          + Add Person
-        </button>
 
-        <div class="notice">
-          Only the owner can add people.
+  <!-- PIN SETUP -->
+  <section id="pinSetupScreen" class="screen center">
+    <div class="auth-card">
+
+      <div class="logo">🔒</div>
+
+      <h1>Create your PIN</h1>
+
+      <p class="sub">
+        Choose a 4-digit PIN for this device.
+        You won't need the access code on this device again.
+      </p>
+
+      <div id="setupDots" class="pin-dots">
+        ○ ○ ○ ○
+      </div>
+
+      <div id="setupPad" class="pin-pad"></div>
+
+      <div id="pinSetupError" class="error"></div>
+
+    </div>
+  </section>
+
+
+  <!-- PIN UNLOCK -->
+  <section id="pinScreen" class="screen center">
+    <div class="auth-card">
+
+      <div class="logo">🔒</div>
+
+      <h1>Welcome back</h1>
+
+      <p class="sub">
+        Enter your 4-digit PIN to unlock MyChat.
+      </p>
+
+      <div id="unlockDots" class="pin-dots">
+        ○ ○ ○ ○
+      </div>
+
+      <div id="unlockPad" class="pin-pad"></div>
+
+      <div id="pinError" class="error"></div>
+
+      <button class="btn secondary" onclick="resetThisDevice()">
+        Reset this device
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- CHAT -->
+  <section id="chatScreen" class="screen chat-screen">
+
+    <header class="topbar">
+
+      <div class="brand">
+
+        <div class="mini-logo">M</div>
+
+        <div>
+          <strong>MyChat</strong>
+          <div class="online">● Group chat</div>
         </div>
 
       </div>
 
-    </aside>
+      <div class="top-actions">
 
-
-    <main class="messages">
-
-      <div id="messageList" class="message-list"></div>
-
-      <form class="composer" onsubmit="sendMessage(event)">
-
-        <input
-          id="messageInput"
-          autocomplete="off"
-          maxlength="1000"
-          placeholder="Type a message..."
+        <button
+          class="small-btn"
+          onclick="openMembers()"
         >
-
-        <button type="submit">
-          Send
+          👥 Members
         </button>
 
-      </form>
+        <button
+          id="adminButton"
+          class="small-btn"
+          onclick="openAdmin()"
+          style="display:none"
+        >
+          ⚙ Admin
+        </button>
 
-    </main>
+        <button
+          class="small-btn"
+          onclick="lockApp()"
+        >
+          🔒 Lock
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <div class="chat-body">
+
+      <aside class="sidebar">
+
+        <h3>Members</h3>
+
+        <div id="memberList"></div>
+
+        <div
+          id="adminPanel"
+          class="add-panel"
+          style="display:none"
+        >
+
+          <b>👑 Owner controls</b>
+
+          <input
+            id="newPersonName"
+            maxlength="30"
+            placeholder="Person's name"
+          >
+
+          <input
+            id="newPersonCode"
+            maxlength="6"
+            inputmode="numeric"
+            placeholder="6-digit code"
+          >
+
+          <button
+            class="btn"
+            onclick="addPerson()"
+          >
+            + Add Person
+          </button>
+
+          <div class="notice">
+            Only the owner can add or remove people.
+          </div>
+
+        </div>
+
+      </aside>
+
+
+      <main class="messages">
+
+        <div
+          id="messageList"
+          class="message-list"
+        ></div>
+
+        <form
+          class="composer"
+          onsubmit="sendMessage(event)"
+        >
+
+          <input
+            id="messageInput"
+            autocomplete="off"
+            maxlength="1000"
+            placeholder="Type a message..."
+          >
+
+          <button>
+            Send
+          </button>
+
+        </form>
+
+      </main>
+
+    </div>
+
+  </section>
+
+
+  <!-- MEMBERS -->
+  <div
+    id="membersModal"
+    class="modal"
+  >
+
+    <div class="modal-card">
+
+      <button
+        class="close"
+        onclick="closeModal('membersModal')"
+      >
+        ✕
+      </button>
+
+      <h2>👥 Members</h2>
+
+      <div id="modalMembers"></div>
+
+    </div>
 
   </div>
 
-</section>
+</div>
 
 
-<!-- MEMBERS MODAL -->
-<div id="membersModal
-```
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+   ========================================================= */
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDhwx8674LpJjZQN-H-GEzOCwPiMoGx0UM",
+
+  authDomain: "chatime-fbf11.firebaseapp.com",
+
+  projectId: "chatime-fbf11",
+
+  storageBucket: "chatime-fbf11.firebasestorage.app",
+
+  messagingSenderId: "482165362193",
+
+  appId: "1:482165362193:web:72afecb708997eb9646bb0"
+
+};
+
+
+/* =========================================================
+   FIREBASE STARTUP
+   ========================================================= */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+/* =========================================================
+   APP VARIABLES
+   ========================================================= */
+
+const DEVICE_KEY = "mychat_device_v2";
+
+let firebaseUser = null;
+
+let currentMember = null;
+
+let currentName = "";
+
+let isOwner = false;
+
+let setupPin = "";
+
+let unlockPin = "";
+
+let unsubscribeMessages = null;
+
+
+/* =========================================================
+   START AUTHENTICATION
+   ========================================================= */
+
+async function startFirebase(){
+
+  const loading =
+    document.getElementById("joinLoading");
+
+  const button =
+    document.getElementById("continueButton");
+
+  try{
+
+    loading.textContent =
+      "Connecting to MyChat...";
+
+    button.disabled = true;
+
+    await signInAnonymously(auth);
+
+  }catch(error){
+
+    console.error(error);
+
+    loading.textContent = "";
+
+    document.getElementById("joinError").textContent =
+      "Firebase could not connect. Check that Anonymous Authentication is enabled.";
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+
+    firebaseUser = user;
+
+    console.log(
+      "MyChat Firebase UID:",
+      user.uid
+    );
+
+    document.getElementById("joinLoading").textContent =
+      "";
+
+    document.getElementById("continueButton").disabled =
+      false;
+
+  }
+
+});
+
+
+/* =========================================================
+   SCREEN CONTROL
+   ========================================================= */
+
+window.show = function(id){
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen=>{
+      screen.classList.remove("active");
+    });
+
+  const target =
+    document.getElementById(id);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+};
+
+
+/* =========================================================
+   ACCESS CODE
+   ========================================================= */
+
+window.checkAccessCode = async function(){
+
+  const input =
+    document.getElementById("accessCode");
+
+  const error =
+    document.getElementById("joinError");
+
+  const loading =
+    document.getElementById("joinLoading");
+
+  const button =
+    document.getElementById("continueButton");
+
+  const code =
+    input.value.replace(/\D/g,"");
+
+
+  error.textContent = "";
+
+
+  if(code.length !== 6){
+
+    error.textContent =
+      "Please enter a 6-digit code.";
+
+    return;
+
+  }
+
+
+  if(!firebaseUser){
+
+    error.textContent =
+      "MyChat is still connecting. Please wait a moment.";
+
+    return;
+
+  }
+
+
+  try{
+
+    button.disabled = true;
+
+    loading.textContent =
+      "Checking access code...";
+
+
+    const codeRef =
+      doc(db,"accessCodes",code);
+
+    const codeSnap =
+      await getDoc(codeRef);
+
+
+    if(!codeSnap.exists()){
+
+      error.textContent =
+        "That access code isn't recognised.";
+
+      loading.textContent = "";
+
+      button.disabled = false;
+
+      return;
+
+    }
+
+
+    const data =
+      codeSnap.data();
+
+
+    if(data.used === true){
+
+      error.textContent =
+        "That access code has already been used.";
+
+      loading.textContent = "";
+
+      button.disabled = false;
+
+      return;
+
+    }
+
+
+    currentMember = {
+
+      code:code,
+
+      name:data.name || "",
+
+      owner:data.owner === true
+
+    };
+
+
+    isOwner =
+      currentMember.owner;
+
+
+    input.value = "";
+
+    loading.textContent = "";
+
+    button.disabled = false;
+
+
+    document.getElementById("displayName").value =
+      currentMember.name || "";
+
+
+    show("nameScreen");
+
+
+  }catch(errorObject){
+
+    console.error(errorObject);
+
+    loading.textContent = "";
+
+    button.disabled = false;
+
+
+    if(
+      errorObject.code ===
+      "permission-denied"
+    ){
+
+      error.textContent =
+        "Firebase blocked the request. We need to set the Firestore rules next.";
+
+    }else{
+
+      error.textContent =
+        "Something went wrong connecting to Firebase.";
+
+    }
+
+  }
+
+};
+
+
+/* =========================================================
+   NAME
+   ========================================================= */
+
+window.saveName = function(){
+
+  const input =
+    document.getElementById("displayName");
+
+  const error =
+    document.getElementById("nameError");
+
+  const name =
+    input.value.trim();
+
+
+  error.textContent = "";
+
+
+  if(name.length < 1){
+
+    error.textContent =
+      "Please enter your name.";
+
+    return;
+
+  }
+
+
+  if(name.length > 30){
+
+    error.textContent =
+      "Your name is too long.";
+
+    return;
+
+  }
+
+
+  currentName = name;
+
+  setupPin = "";
+
+  buildPad("setupPad",true);
+
+  updateDots("setupDots",setupPin);
+
+  show("pinSetupScreen");
+
+};
+
+
+/* =========================================================
+   PIN PAD
+   ========================================================= */
+
+function buildPad(id,setup){
+
+  const pad =
+    document.getElementById(id);
+
+  pad.innerHTML = "";
+
+
+  [
+    "1","2","3",
+    "4","5","6",
+    "7","8","9",
+    "0"
+  ].forEach(number=>{
+
+    const button =
+      document.createElement("button");
+
+    button.textContent =
+      number;
+
+    if(number === "0"){
+      button.className = "wide";
+    }
+
+    button.onclick = ()=>{
+      pinDigit(number,setup);
+    };
+
+    pad.appendChild(button);
+
+  });
+
+
+  const clear =
+    document.createElement("button");
+
+  clear.textContent = "⌫";
+
+  clear.className = "clear";
+
+  clear.onclick = ()=>{
+    pinBackspace(setup);
+  };
+
+  pad.appendChild(clear);
+
+}
+
+
+function pinDigit(number,setup){
+
+  if(setup){
+
+    if(setupPin.length < 4){
+
+      setupPin += number;
+
+    }
+
+    updateDots(
+      "setupDots",
+      setupPin
+    );
+
+
+    if(setupPin.length === 4){
+
+      finishPinSetup();
+
+    }
+
+  }else{
+
+    if(unlockPin.length < 4){
+
+      unlockPin += number;
+
+    }
+
+    updateDots(
+      "unlockDots",
+      unlockPin
+    );
+
+
+    if(unlockPin.length === 4){
+
+      unlock();
+
+    }
+
+  }
+
+}
+
+
+function pinBackspace(setup){
+
+  if(setup){
+
+    setupPin =
+      setupPin.slice(0,-1);
+
+    updateDots(
+      "setupDots",
+      setupPin
+    );
+
+  }else{
+
+    unlockPin =
+      unlockPin.slice(0,-1);
+
+    updateDots(
+      "unlockDots",
+      unlockPin
+    );
+
+  }
+
+}
+
+
+function updateDots(id,pin){
+
+  document.getElementById(id).textContent =
+    [0,1,2,3]
+      .map(i =>
+        i < pin.length
+          ? "●"
+          : "○"
+      )
+      .join(" ");
+
+}
+
+
+/* =========================================================
+   FINISH DEVICE SETUP
+   ========================================================= */
+
+async function finishPinSetup(){
+
+  const error =
+    document.getElementById("pinSetupError");
+
+  error.textContent = "";
+
+
+  if(!firebaseUser){
+
+    error.textContent =
+      "Firebase is not connected.";
+
+    return;
+
+  }
+
+
+  try{
+
+    const code =
+      currentMember.code;
+
+
+    /* Save this device locally */
+
+    localStorage.setItem(
+      DEVICE_KEY,
+      JSON.stringify({
+
+        uid:firebaseUser.uid,
+
+        name:currentName,
+
+        pin:setupPin,
+
+        owner:isOwner,
+
+        code:code
+
+      })
+    );
+
+
+    /* Mark the access code as used */
+
+    await updateDoc(
+      doc(db,"accessCodes",code),
+      {
+
+        used:true,
+
+        usedBy:firebaseUser.uid,
+
+        usedAt:serverTimestamp()
+
+      }
+    );
+
+
+    /* Create this member */
+
+    await setDoc(
+      doc(db,"members",firebaseUser.uid),
+      {
+
+        uid:firebaseUser.uid,
+
+        name:currentName,
+
+        owner:isOwner,
+
+        active:true,
+
+        code:code,
+
+        createdAt:serverTimestamp()
+
+      }
+    );
+
+
+    openChat();
+
+
+  }catch(errorObject){
+
+    console.error(errorObject);
+
+    error.textContent =
+      "Firebase blocked setup. We need to configure the Firestore rules next.";
+
+  }
+
+}
+
+
+/* =========================================================
+   UNLOCK
+   ========================================================= */
+
+window.unlock = function(){
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(DEVICE_KEY) || "null"
+    );
+
+
+  const error =
+    document.getElementById("pinError");
+
+
+  if(
+    saved &&
+    unlockPin === saved.pin
+  ){
+
+    currentName =
+      saved.name;
+
+    isOwner =
+      !!saved.owner;
+
+    unlockPin = "";
+
+    error.textContent = "";
+
+    updateDots(
+      "unlockDots",
+      ""
+    );
+
+    openChat();
+
+  }else{
+
+    error.textContent =
+      "Incorrect PIN.";
+
+    unlockPin = "";
+
+    updateDots(
+      "unlockDots",
+      ""
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   CHAT
+   ========================================================= */
+
+function openChat(){
+
+  renderMembers();
+
+  updateAdminVisibility();
+
+  startMessageListener();
+
+  show("chatScreen");
+
+}
+
+
+function startMessageListener(){
+
+  if(unsubscribeMessages){
+
+    unsubscribeMessages();
+
+  }
+
+
+  const messagesQuery =
+    query(
+      collection(db,"messages"),
+      orderBy("createdAt","asc")
+    );
+
+
+  unsubscribeMessages =
+    onSnapshot(
+      messagesQuery,
+
+      snapshot=>{
+
+        const list =
+          document.getElementById(
+            "messageList"
+          );
+
+        list.innerHTML = "";
+
+
+        snapshot.forEach(messageDoc=>{
+
+          const message =
+            messageDoc.data();
+
+
+          const isMe =
+            message.uid === firebaseUser?.uid;
+
+
+          const element =
+            document.createElement("div");
+
+
+          element.className =
+            "message" +
+            (isMe ? " me" : "");
+
+
+          element.innerHTML = `
+
+            <div class="avatar">
+              ${escapeHtml(
+                (message.name || "?")
+                .charAt(0)
+                .toUpperCase()
+              )}
+            </div>
+
+            <div class="msg-wrap">
+
+              <div class="msg-name">
+                ${escapeHtml(
+                  message.name || "Unknown"
+                )}
+              </div>
+
+              <div class="bubble">
+                ${escapeHtml(
+                  message.text || ""
+                )}
+              </div>
+
+            </div>
+
+          `;
+
+
+          list.appendChild(element);
+
+        });
+
+
+        list.scrollTop =
+          list.scrollHeight;
+
+      },
+
+      error=>{
+
+        console.error(
+          "Message listener:",
+          error
+        );
+
+      }
+
+    );
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+   ========================================================= */
+
+window.sendMessage = async function(event){
+
+  event.preventDefault();
+
+
+  const input =
+    document.getElementById(
+      "messageInput"
+    );
+
+
+  const text =
+    input.value.trim();
+
+
+  if(!text){
+
+    return;
+
+  }
+
+
+  if(!firebaseUser){
+
+    alert(
+      "You are not connected to MyChat."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await addDoc(
+      collection(db,"messages"),
+      {
+
+        uid:firebaseUser.uid,
+
+        name:currentName,
+
+        text:text,
+
+        createdAt:serverTimestamp()
+
+      }
+    );
+
+
+    input.value = "";
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "The message could not be sent. We may need to update the Firestore rules."
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   MEMBERS
+   ========================================================= */
+
+async function getMembers(){
+
+  const list = [];
+
+  try{
+
+    /*
+      Firebase queries will be added to the
+      security rules in the next step.
+    */
+
+    const snapshot =
+      await import(
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js"
+      ).then(module =>
+        module.getDocs(
+          collection(db,"members")
+        )
+      );
+
+
+    snapshot.forEach(memberDoc=>{
+
+      list.push(
+        memberDoc.data()
+      );
+
+    });
+
+  }catch(error){
+
+    console.error(
+      "Member loading error:",
+      error
+    );
+
+  }
+
+
+  return list;
+
+}
+
+
+async function renderMembers(){
+
+  const list =
+    document.getElementById(
+      "memberList"
+    );
+
+
+  list.innerHTML =
+    '<div class="empty">Loading members...</div>';
+
+
+  const members =
+    await getMembers();
+
+
+  list.innerHTML = "";
+
+
+  if(members.length === 0){
+
+    list.innerHTML =
+      '<div class="empty">No members found.</div>';
+
+    return;
+
+  }
+
+
+  members.forEach(member=>{
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "member";
+
+
+    row.innerHTML = `
+
+      <div class="avatar">
+        ${escapeHtml(
+          (member.name || "?")
+          .charAt(0)
+          .toUpperCase()
+        )}
+      </div>
+
+      <div>
+
+        <b>
+          ${escapeHtml(
+            member.name || "Unknown"
+          )}
+        </b>
+
+        ${
+          member.owner
+          ? "<small>Owner</small>"
+          : ""
+        }
+
+      </div>
+
+    `;
+
+
+    list.appendChild(row);
+
+  });
+
+}
+
+
+/* =========================================================
+   OWNER CONTROLS
+   ========================================================= */
+
+function updateAdminVisibility(){
+
+  const panel =
+    document.getElementById(
+      "adminPanel"
+    );
+
+  const button =
+    document.getElementById(
+      "adminButton"
+    );
+
+
+  panel.style.display =
+    isOwner
+      ? "block"
+      : "none";
+
+
+  button.style.display =
+    isOwner
+      ? "inline-block"
+      : "none";
+
+}
+
+
+window.addPerson = async function(){
+
+  if(!isOwner){
+
+    return;
+
+  }
+
+
+  const name =
+    document
+      .getElementById(
+        "newPersonName"
+      )
+      .value
+      .trim();
+
+
+  const code =
+    document
+      .getElementById(
+        "newPersonCode"
+      )
+      .value
+      .replace(/\D/g,"");
+
+
+  if(!name){
+
+    alert(
+      "Enter the person's name."
+    );
+
+    return;
+
+  }
+
+
+  if(code.length !== 6){
+
+    alert(
+      "The access code must be 6 digits."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const codeRef =
+      doc(
+        db,
+        "accessCodes",
+        code
+      );
+
+
+    const existing =
+      await getDoc(codeRef);
+
+
+    if(existing.exists()){
+
+      alert(
+        "That access code already exists."
+      );
+
+      return;
+
+    }
+
+
+    await setDoc(
+      codeRef,
+      {
+
+        name:name,
+
+        owner:false,
+
+        used:false,
+
+        createdAt:serverTimestamp()
+
+      }
+    );
+
+
+    document
+      .getElementById(
+        "newPersonName"
+      )
+      .value = "";
+
+
+    document
+      .getElementById(
+        "newPersonCode"
+      )
+      .value = "";
+
+
+    alert(
+      name +
+      " has been added."
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Firebase blocked this action. The owner security rules need to be configured."
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   MEMBERS MODAL
+   ========================================================= */
+
+window.openMembers = async function(){
+
+  const box =
+    document.getElementById(
+      "modalMembers"
+    );
+
+
+  box.innerHTML =
+    '<div class="empty">Loading...</div>';
+
+
+  document
+    .getElementById(
+      "membersModal"
+    )
+    .classList.add("show");
+
+
+  const members =
+    await getMembers();
+
+
+  box.innerHTML = "";
+
+
+  if(members.length === 0){
+
+    box.innerHTML =
+      '<div class="empty">No members found.</div>';
+
+    return;
+
+  }
+
+
+  members.forEach(member=>{
+
+    const row =
+      document.createElement("div");
+
+    row.className =
+      "member-row";
+
+
+    const left =
+      document.createElement("span");
+
+
+    left.innerHTML =
+      `👤 <b>${escapeHtml(
+        member.name || "Unknown"
+      )}</b>` +
+      (
+        member.owner
+          ? " — Owner"
+          : ""
+      );
+
+
+    row.appendChild(left);
+
+
+    if(
+      isOwner &&
+      !member.owner
+    ){
+
+      const remove =
+        document.createElement(
+          "button"
+        );
+
+      remove.className =
+        "remove";
+
+      remove.textContent =
+        "Remove";
+
+
+      remove.onclick =
+        ()=>removePerson(member);
+
+
+      row.appendChild(remove);
+
+    }
+
+
+    box.appendChild(row);
+
+  });
+
+};
+
+
+window.removePerson = async function(member){
+
+  if(!isOwner){
+
+    return;
+
+  }
+
+
+  if(member.owner){
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      "Remove " +
+      member.name +
+      " from MyChat?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    await deleteDoc(
+      doc(
+        db,
+        "members",
+        member.uid
+      )
+    );
+
+
+    if(member.code){
+
+      await deleteDoc(
+        doc(
+          db,
+          "accessCodes",
+          member.code
+        )
+      );
+
+    }
+
+
+    openMembers();
+
+    renderMembers();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Firebase blocked the removal. The security rules need to be configured."
+    );
+
+  }
+
+};
+
+
+window.closeModal = function(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
+};
+
+
+window.openAdmin = function(){
+
+  if(isOwner){
+
+    document
+      .getElementById(
+        "newPersonName"
+      )
+      .focus();
+
+  }
+
+};
+
+
+/* =========================================================
+   LOCK
+   ========================================================= */
+
+window.lockApp = function(){
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(
+        DEVICE_KEY
+      ) || "null"
+    );
+
+
+  if(saved){
+
+    unlockPin = "";
+
+    updateDots(
+      "unlockDots",
+      ""
+    );
+
+    buildPad(
+      "unlockPad",
+      false
+    );
+
+    show("pinScreen");
+
+  }
+
+};
+
+
+/* =========================================================
+   RESET DEVICE
+   ========================================================= */
+
+window.resetThisDevice = function(){
+
+  if(
+    confirm(
+      "Reset this device? You will need an access code again."
+    )
+  ){
+
+    localStorage.removeItem(
+      DEVICE_KEY
+    );
+
+    location.reload();
+
+  }
+
+};
+
+
+/* =========================================================
+   HTML SAFETY
+   ========================================================= */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(
+      /[&<>"']/g,
+      character =>
+        ({
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
+        })[character]
+    );
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+async function init(){
+
+  const saved =
+    localStorage.getItem(
+      DEVICE_KEY
+    );
+
+
+  if(saved){
+
+    buildPad(
+      "unlockPad",
+      false
+    );
+
+    show("pinScreen");
+
+  }else{
+
+    show("joinScreen");
+
+  }
+
+
+  await startFirebase();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>

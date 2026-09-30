@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -478,6 +479,7 @@ h1{
 }
 
 @media(max-width:700px){
+
   .app{
     height:100vh;
     border-radius:0;
@@ -502,284 +504,294 @@ h1{
   .message-list{
     padding:15px;
   }
+
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="app">
 
-  <!-- JOIN -->
-  <section id="joinScreen" class="screen active center">
-    <div class="auth-card">
+<section id="joinScreen" class="screen active center">
 
-      <div class="logo">M</div>
+  <div class="auth-card">
 
-      <h1>Welcome to MyChat</h1>
+```
+<div class="logo">M</div>
 
-      <p class="sub">
-        Enter your 6-digit access code to join the group.
-      </p>
+<h1>Welcome to MyChat</h1>
 
-      <input
-        id="accessCode"
-        class="code-box"
-        maxlength="6"
-        inputmode="numeric"
-        autocomplete="one-time-code"
-        placeholder="000000"
-      >
+<p class="sub">
+  Enter your 6-digit access code to join the group.
+</p>
 
-      <div id="joinError" class="error"></div>
+<input
+  id="accessCode"
+  class="code-box"
+  maxlength="6"
+  inputmode="numeric"
+  autocomplete="one-time-code"
+  placeholder="000000"
+>
 
-      <div id="joinLoading" class="loading"></div>
+<div id="joinError" class="error"></div>
 
-      <button
-        id="continueButton"
-        class="btn"
-        onclick="checkAccessCode()"
-      >
-        Continue
-      </button>
+<div id="joinLoading" class="loading"></div>
 
-    </div>
-  </section>
+<button
+  id="continueButton"
+  class="btn"
+  onclick="checkAccessCode()"
+>
+  Continue
+</button>
+```
 
+  </div>
 
-  <!-- NAME -->
-  <section id="nameScreen" class="screen center">
-    <div class="auth-card">
+</section>
 
-      <div class="logo">M</div>
+<section id="nameScreen" class="screen center">
 
-      <h1>What's your name?</h1>
+  <div class="auth-card">
 
-      <p class="sub">
-        This is the name other people will see in the chat.
-      </p>
+```
+<div class="logo">M</div>
 
-      <input
-        id="displayName"
-        class="code-box name-box"
-        maxlength="30"
-        autocomplete="name"
-        placeholder="Your name"
-      >
+<h1>What's your name?</h1>
 
-      <div id="nameError" class="error"></div>
+<p class="sub">
+  This is the name other people will see in the chat.
+</p>
 
-      <button class="btn" onclick="saveName()">
-        Continue
-      </button>
+<input
+  id="displayName"
+  class="code-box name-box"
+  maxlength="30"
+  autocomplete="name"
+  placeholder="Your name"
+>
 
-    </div>
-  </section>
+<div id="nameError" class="error"></div>
 
+<button class="btn" onclick="saveName()">
+  Continue
+</button>
+```
 
-  <!-- PIN SETUP -->
-  <section id="pinSetupScreen" class="screen center">
-    <div class="auth-card">
+  </div>
 
-      <div class="logo">🔒</div>
+</section>
 
-      <h1>Create your PIN</h1>
+<section id="pinSetupScreen" class="screen center">
 
-      <p class="sub">
-        Choose a 4-digit PIN for this device.
-        You won't need the access code on this device again.
-      </p>
+  <div class="auth-card">
 
-      <div id="setupDots" class="pin-dots">
-        ○ ○ ○ ○
-      </div>
+```
+<div class="logo">🔒</div>
 
-      <div id="setupPad" class="pin-pad"></div>
+<h1>Create your PIN</h1>
 
-      <div id="pinSetupError" class="error"></div>
+<p class="sub">
+  Choose a 4-digit PIN for this device.
+  You won't need the access code on this device again.
+</p>
 
-    </div>
-  </section>
+<div id="setupDots" class="pin-dots">
+  ○ ○ ○ ○
+</div>
 
+<div id="setupPad" class="pin-pad"></div>
 
-  <!-- PIN UNLOCK -->
-  <section id="pinScreen" class="screen center">
-    <div class="auth-card">
+<div id="pinSetupError" class="error"></div>
+```
 
-      <div class="logo">🔒</div>
+  </div>
 
-      <h1>Welcome back</h1>
+</section>
 
-      <p class="sub">
-        Enter your 4-digit PIN to unlock MyChat.
-      </p>
+<section id="pinScreen" class="screen center">
 
-      <div id="unlockDots" class="pin-dots">
-        ○ ○ ○ ○
-      </div>
+  <div class="auth-card">
 
-      <div id="unlockPad" class="pin-pad"></div>
+```
+<div class="logo">🔒</div>
 
-      <div id="pinError" class="error"></div>
+<h1>Welcome back</h1>
 
-      <button class="btn secondary" onclick="resetThisDevice()">
-        Reset this device
-      </button>
+<p class="sub">
+  Enter your 4-digit PIN to unlock MyChat.
+</p>
 
-    </div>
-  </section>
+<div id="unlockDots" class="pin-dots">
+  ○ ○ ○ ○
+</div>
 
+<div id="unlockPad" class="pin-pad"></div>
 
-  <!-- CHAT -->
-  <section id="chatScreen" class="screen chat-screen">
+<div id="pinError" class="error"></div>
 
-    <header class="topbar">
+<button class="btn secondary" onclick="resetThisDevice()">
+  Reset this device
+</button>
+```
 
-      <div class="brand">
+  </div>
 
-        <div class="mini-logo">M</div>
+</section>
 
-        <div>
-          <strong>MyChat</strong>
-          <div class="online">● Group chat</div>
-        </div>
+<section id="chatScreen" class="screen chat-screen">
 
-      </div>
+  <header class="topbar">
 
-      <div class="top-actions">
+```
+<div class="brand">
 
-        <button
-          class="small-btn"
-          onclick="openMembers()"
-        >
-          👥 Members
-        </button>
+  <div class="mini-logo">M</div>
 
-        <button
-          id="adminButton"
-          class="small-btn"
-          onclick="openAdmin()"
-          style="display:none"
-        >
-          ⚙ Admin
-        </button>
+  <div>
+    <strong>MyChat</strong>
+    <div class="online">● Group chat</div>
+  </div>
 
-        <button
-          class="small-btn"
-          onclick="lockApp()"
-        >
-          🔒 Lock
-        </button>
+</div>
 
-      </div>
+<div class="top-actions">
 
-    </header>
+  <button
+    class="small-btn"
+    onclick="openMembers()"
+  >
+    👥 Members
+  </button>
 
+  <button
+    id="adminButton"
+    class="small-btn"
+    onclick="openAdmin()"
+    style="display:none"
+  >
+    ⚙ Admin
+  </button>
 
-    <div class="chat-body">
+  <button
+    class="small-btn"
+    onclick="lockApp()"
+  >
+    🔒 Lock
+  </button>
 
-      <aside class="sidebar">
+</div>
+```
 
-        <h3>Members</h3>
+  </header>
 
-        <div id="memberList"></div>
+  <div class="chat-body">
 
-        <div
-          id="adminPanel"
-          class="add-panel"
-          style="display:none"
-        >
+```
+<aside class="sidebar">
 
-          <b>👑 Owner controls</b>
+  <h3>Members</h3>
 
-          <input
-            id="newPersonName"
-            maxlength="30"
-            placeholder="Person's name"
-          >
+  <div id="memberList"></div>
 
-          <input
-            id="newPersonCode"
-            maxlength="6"
-            inputmode="numeric"
-            placeholder="6-digit code"
-          >
-
-          <button
-            class="btn"
-            onclick="addPerson()"
-          >
-            + Add Person
-          </button>
-
-          <div class="notice">
-            Only the owner can add or remove people.
-          </div>
-
-        </div>
-
-      </aside>
-
-
-      <main class="messages">
-
-        <div
-          id="messageList"
-          class="message-list"
-        ></div>
-
-        <form
-          class="composer"
-          onsubmit="sendMessage(event)"
-        >
-
-          <input
-            id="messageInput"
-            autocomplete="off"
-            maxlength="1000"
-            placeholder="Type a message..."
-          >
-
-          <button>
-            Send
-          </button>
-
-        </form>
-
-      </main>
-
-    </div>
-
-  </section>
-
-
-  <!-- MEMBERS -->
   <div
-    id="membersModal"
-    class="modal"
+    id="adminPanel"
+    class="add-panel"
+    style="display:none"
   >
 
-    <div class="modal-card">
+    <b>👑 Owner controls</b>
 
-      <button
-        class="close"
-        onclick="closeModal('membersModal')"
-      >
-        ✕
-      </button>
+    <input
+      id="newPersonName"
+      maxlength="30"
+      placeholder="Person's name"
+    >
 
-      <h2>👥 Members</h2>
+    <input
+      id="newPersonCode"
+      maxlength="6"
+      inputmode="numeric"
+      placeholder="6-digit code"
+    >
 
-      <div id="modalMembers"></div>
+    <button
+      class="btn"
+      onclick="addPerson()"
+    >
+      + Add Person
+    </button>
 
+    <div class="notice">
+      Only the owner can add or remove people.
     </div>
+
+  </div>
+
+</aside>
+
+
+<main class="messages">
+
+  <div
+    id="messageList"
+    class="message-list"
+  ></div>
+
+  <form
+    class="composer"
+    onsubmit="sendMessage(event)"
+  >
+
+    <input
+      id="messageInput"
+      autocomplete="off"
+      maxlength="1000"
+      placeholder="Type a message..."
+    >
+
+    <button>
+      Send
+    </button>
+
+  </form>
+
+</main>
+```
+
+  </div>
+
+</section>
+
+<div
+  id="membersModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+```
+<button
+  class="close"
+  onclick="closeModal('membersModal')"
+>
+  ✕
+</button>
+
+<h2>👥 Members</h2>
+
+<div id="modalMembers"></div>
+```
 
   </div>
 
 </div>
 
+</div>
 
-<!-- FIREBASE -->
 <script type="module">
 
 import { initializeApp }
@@ -796,8 +808,8 @@ import {
   getFirestore,
   doc,
   getDoc,
+  getDocs,
   setDoc,
-  updateDoc,
   deleteDoc,
   collection,
   addDoc,
@@ -809,43 +821,42 @@ import {
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
-/* =========================================================
-   FIREBASE CONFIG
-   ========================================================= */
-
 const firebaseConfig = {
 
-  apiKey: "AIzaSyDhwx8674LpJjZQN-H-GEzOCwPiMoGx0UM",
+  apiKey:
+    "AIzaSyDhwx8674LpJjZQN-H-GEzOCwPiMoGx0UM",
 
-  authDomain: "chatime-fbf11.firebaseapp.com",
+  authDomain:
+    "chatime-fbf11.firebaseapp.com",
 
-  projectId: "chatime-fbf11",
+  projectId:
+    "chatime-fbf11",
 
-  storageBucket: "chatime-fbf11.firebasestorage.app",
+  storageBucket:
+    "chatime-fbf11.firebasestorage.app",
 
-  messagingSenderId: "482165362193",
+  messagingSenderId:
+    "482165362193",
 
-  appId: "1:482165362193:web:72afecb708997eb9646bb0"
+  appId:
+    "1:482165362193:web:72afecb708997eb9646bb0"
 
 };
 
 
-/* =========================================================
-   FIREBASE STARTUP
-   ========================================================= */
+const app =
+  initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
+const auth =
+  getAuth(app);
 
-const auth = getAuth(app);
+const db =
+  getFirestore(app);
 
-const db = getFirestore(app);
 
+const DEVICE_KEY =
+  "mychat_device_v3";
 
-/* =========================================================
-   APP VARIABLES
-   ========================================================= */
-
-const DEVICE_KEY = "mychat_device_v2";
 
 let firebaseUser = null;
 
@@ -861,10 +872,6 @@ let unlockPin = "";
 
 let unsubscribeMessages = null;
 
-
-/* =========================================================
-   START AUTHENTICATION
-   ========================================================= */
 
 async function startFirebase(){
 
@@ -921,10 +928,6 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 
-/* =========================================================
-   SCREEN CONTROL
-   ========================================================= */
-
 window.show = function(id){
 
   document
@@ -943,10 +946,6 @@ window.show = function(id){
 };
 
 
-/* =========================================================
-   ACCESS CODE
-   ========================================================= */
-
 window.checkAccessCode = async function(){
 
   const input =
@@ -964,9 +963,7 @@ window.checkAccessCode = async function(){
   const code =
     input.value.replace(/\D/g,"");
 
-
   error.textContent = "";
-
 
   if(code.length !== 6){
 
@@ -977,7 +974,6 @@ window.checkAccessCode = async function(){
 
   }
 
-
   if(!firebaseUser){
 
     error.textContent =
@@ -987,7 +983,6 @@ window.checkAccessCode = async function(){
 
   }
 
-
   try{
 
     button.disabled = true;
@@ -995,13 +990,11 @@ window.checkAccessCode = async function(){
     loading.textContent =
       "Checking access code...";
 
-
     const codeRef =
       doc(db,"accessCodes",code);
 
     const codeSnap =
       await getDoc(codeRef);
-
 
     if(!codeSnap.exists()){
 
@@ -1016,24 +1009,8 @@ window.checkAccessCode = async function(){
 
     }
 
-
     const data =
       codeSnap.data();
-
-
-    if(data.used === true){
-
-      error.textContent =
-        "That access code has already been used.";
-
-      loading.textContent = "";
-
-      button.disabled = false;
-
-      return;
-
-    }
-
 
     currentMember = {
 
@@ -1045,10 +1022,8 @@ window.checkAccessCode = async function(){
 
     };
 
-
     isOwner =
       currentMember.owner;
-
 
     input.value = "";
 
@@ -1056,13 +1031,10 @@ window.checkAccessCode = async function(){
 
     button.disabled = false;
 
-
     document.getElementById("displayName").value =
       currentMember.name || "";
 
-
     show("nameScreen");
-
 
   }catch(errorObject){
 
@@ -1072,14 +1044,13 @@ window.checkAccessCode = async function(){
 
     button.disabled = false;
 
-
     if(
       errorObject.code ===
       "permission-denied"
     ){
 
       error.textContent =
-        "Firebase blocked the request. We need to set the Firestore rules next.";
+        "Firebase blocked the request.";
 
     }else{
 
@@ -1093,10 +1064,6 @@ window.checkAccessCode = async function(){
 };
 
 
-/* =========================================================
-   NAME
-   ========================================================= */
-
 window.saveName = function(){
 
   const input =
@@ -1108,9 +1075,7 @@ window.saveName = function(){
   const name =
     input.value.trim();
 
-
   error.textContent = "";
-
 
   if(name.length < 1){
 
@@ -1121,7 +1086,6 @@ window.saveName = function(){
 
   }
 
-
   if(name.length > 30){
 
     error.textContent =
@@ -1130,7 +1094,6 @@ window.saveName = function(){
     return;
 
   }
-
 
   currentName = name;
 
@@ -1145,17 +1108,12 @@ window.saveName = function(){
 };
 
 
-/* =========================================================
-   PIN PAD
-   ========================================================= */
-
 function buildPad(id,setup){
 
   const pad =
     document.getElementById(id);
 
   pad.innerHTML = "";
-
 
   [
     "1","2","3",
@@ -1181,7 +1139,6 @@ function buildPad(id,setup){
     pad.appendChild(button);
 
   });
-
 
   const clear =
     document.createElement("button");
@@ -1214,7 +1171,6 @@ function pinDigit(number,setup){
       setupPin
     );
 
-
     if(setupPin.length === 4){
 
       finishPinSetup();
@@ -1233,7 +1189,6 @@ function pinDigit(number,setup){
       "unlockDots",
       unlockPin
     );
-
 
     if(unlockPin.length === 4){
 
@@ -1287,17 +1242,12 @@ function updateDots(id,pin){
 }
 
 
-/* =========================================================
-   FINISH DEVICE SETUP
-   ========================================================= */
-
 async function finishPinSetup(){
 
   const error =
     document.getElementById("pinSetupError");
 
   error.textContent = "";
-
 
   if(!firebaseUser){
 
@@ -1308,14 +1258,10 @@ async function finishPinSetup(){
 
   }
 
-
   try{
 
     const code =
       currentMember.code;
-
-
-    /* Save this device locally */
 
     localStorage.setItem(
       DEVICE_KEY,
@@ -1333,25 +1279,6 @@ async function finishPinSetup(){
 
       })
     );
-
-
-    /* Mark the access code as used */
-
-    await updateDoc(
-      doc(db,"accessCodes",code),
-      {
-
-        used:true,
-
-        usedBy:firebaseUser.uid,
-
-        usedAt:serverTimestamp()
-
-      }
-    );
-
-
-    /* Create this member */
 
     await setDoc(
       doc(db,"members",firebaseUser.uid),
@@ -1372,25 +1299,21 @@ async function finishPinSetup(){
       }
     );
 
-
     openChat();
-
 
   }catch(errorObject){
 
     console.error(errorObject);
 
+    localStorage.removeItem(DEVICE_KEY);
+
     error.textContent =
-      "Firebase blocked setup. We need to configure the Firestore rules next.";
+      "Firebase blocked setup. Check the Firestore rules.";
 
   }
 
 }
 
-
-/* =========================================================
-   UNLOCK
-   ========================================================= */
 
 window.unlock = function(){
 
@@ -1399,10 +1322,8 @@ window.unlock = function(){
       localStorage.getItem(DEVICE_KEY) || "null"
     );
 
-
   const error =
     document.getElementById("pinError");
-
 
   if(
     saved &&
@@ -1443,10 +1364,6 @@ window.unlock = function(){
 };
 
 
-/* =========================================================
-   CHAT
-   ========================================================= */
-
 function openChat(){
 
   renderMembers();
@@ -1468,13 +1385,11 @@ function startMessageListener(){
 
   }
 
-
   const messagesQuery =
     query(
       collection(db,"messages"),
       orderBy("createdAt","asc")
     );
-
 
   unsubscribeMessages =
     onSnapshot(
@@ -1489,25 +1404,20 @@ function startMessageListener(){
 
         list.innerHTML = "";
 
-
         snapshot.forEach(messageDoc=>{
 
           const message =
             messageDoc.data();
 
-
           const isMe =
             message.uid === firebaseUser?.uid;
-
 
           const element =
             document.createElement("div");
 
-
           element.className =
             "message" +
             (isMe ? " me" : "");
-
 
           element.innerHTML = `
 
@@ -1537,11 +1447,9 @@ function startMessageListener(){
 
           `;
 
-
           list.appendChild(element);
 
         });
-
 
         list.scrollTop =
           list.scrollHeight;
@@ -1562,31 +1470,21 @@ function startMessageListener(){
 }
 
 
-/* =========================================================
-   SEND MESSAGE
-   ========================================================= */
-
 window.sendMessage = async function(event){
 
   event.preventDefault();
-
 
   const input =
     document.getElementById(
       "messageInput"
     );
 
-
   const text =
     input.value.trim();
 
-
   if(!text){
-
     return;
-
   }
-
 
   if(!firebaseUser){
 
@@ -1597,7 +1495,6 @@ window.sendMessage = async function(event){
     return;
 
   }
-
 
   try{
 
@@ -1616,16 +1513,14 @@ window.sendMessage = async function(event){
       }
     );
 
-
     input.value = "";
-
 
   }catch(error){
 
     console.error(error);
 
     alert(
-      "The message could not be sent. We may need to update the Firestore rules."
+      "The message could not be sent."
     );
 
   }
@@ -1633,30 +1528,16 @@ window.sendMessage = async function(event){
 };
 
 
-/* =========================================================
-   MEMBERS
-   ========================================================= */
-
 async function getMembers(){
 
   const list = [];
 
   try{
 
-    /*
-      Firebase queries will be added to the
-      security rules in the next step.
-    */
-
     const snapshot =
-      await import(
-        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js"
-      ).then(module =>
-        module.getDocs(
-          collection(db,"members")
-        )
+      await getDocs(
+        collection(db,"members")
       );
-
 
     snapshot.forEach(memberDoc=>{
 
@@ -1675,7 +1556,6 @@ async function getMembers(){
 
   }
 
-
   return list;
 
 }
@@ -1688,17 +1568,13 @@ async function renderMembers(){
       "memberList"
     );
 
-
   list.innerHTML =
     '<div class="empty">Loading members...</div>';
-
 
   const members =
     await getMembers();
 
-
   list.innerHTML = "";
-
 
   if(members.length === 0){
 
@@ -1709,7 +1585,6 @@ async function renderMembers(){
 
   }
 
-
   members.forEach(member=>{
 
     const row =
@@ -1717,7 +1592,6 @@ async function renderMembers(){
 
     row.className =
       "member";
-
 
     row.innerHTML = `
 
@@ -1747,17 +1621,12 @@ async function renderMembers(){
 
     `;
 
-
     list.appendChild(row);
 
   });
 
 }
 
-
-/* =========================================================
-   OWNER CONTROLS
-   ========================================================= */
 
 function updateAdminVisibility(){
 
@@ -1771,12 +1640,10 @@ function updateAdminVisibility(){
       "adminButton"
     );
 
-
   panel.style.display =
     isOwner
       ? "block"
       : "none";
-
 
   button.style.display =
     isOwner
@@ -1789,11 +1656,8 @@ function updateAdminVisibility(){
 window.addPerson = async function(){
 
   if(!isOwner){
-
     return;
-
   }
-
 
   const name =
     document
@@ -1803,7 +1667,6 @@ window.addPerson = async function(){
       .value
       .trim();
 
-
   const code =
     document
       .getElementById(
@@ -1811,7 +1674,6 @@ window.addPerson = async function(){
       )
       .value
       .replace(/\D/g,"");
-
 
   if(!name){
 
@@ -1823,7 +1685,6 @@ window.addPerson = async function(){
 
   }
 
-
   if(code.length !== 6){
 
     alert(
@@ -1834,7 +1695,6 @@ window.addPerson = async function(){
 
   }
 
-
   try{
 
     const codeRef =
@@ -1844,10 +1704,8 @@ window.addPerson = async function(){
         code
       );
 
-
     const existing =
       await getDoc(codeRef);
-
 
     if(existing.exists()){
 
@@ -1858,7 +1716,6 @@ window.addPerson = async function(){
       return;
 
     }
-
 
     await setDoc(
       codeRef,
@@ -1875,13 +1732,11 @@ window.addPerson = async function(){
       }
     );
 
-
     document
       .getElementById(
         "newPersonName"
       )
       .value = "";
-
 
     document
       .getElementById(
@@ -1889,29 +1744,23 @@ window.addPerson = async function(){
       )
       .value = "";
 
-
     alert(
       name +
       " has been added."
     );
-
 
   }catch(error){
 
     console.error(error);
 
     alert(
-      "Firebase blocked this action. The owner security rules need to be configured."
+      "Firebase blocked this action."
     );
 
   }
 
 };
 
-
-/* =========================================================
-   MEMBERS MODAL
-   ========================================================= */
 
 window.openMembers = async function(){
 
@@ -1920,10 +1769,8 @@ window.openMembers = async function(){
       "modalMembers"
     );
 
-
   box.innerHTML =
     '<div class="empty">Loading...</div>';
-
 
   document
     .getElementById(
@@ -1931,13 +1778,10 @@ window.openMembers = async function(){
     )
     .classList.add("show");
 
-
   const members =
     await getMembers();
 
-
   box.innerHTML = "";
-
 
   if(members.length === 0){
 
@@ -1948,7 +1792,6 @@ window.openMembers = async function(){
 
   }
 
-
   members.forEach(member=>{
 
     const row =
@@ -1957,10 +1800,8 @@ window.openMembers = async function(){
     row.className =
       "member-row";
 
-
     const left =
       document.createElement("span");
-
 
     left.innerHTML =
       `👤 <b>${escapeHtml(
@@ -1972,9 +1813,7 @@ window.openMembers = async function(){
           : ""
       );
 
-
     row.appendChild(left);
-
 
     if(
       isOwner &&
@@ -1992,15 +1831,12 @@ window.openMembers = async function(){
       remove.textContent =
         "Remove";
 
-
       remove.onclick =
         ()=>removePerson(member);
-
 
       row.appendChild(remove);
 
     }
-
 
     box.appendChild(row);
 
@@ -2012,18 +1848,12 @@ window.openMembers = async function(){
 window.removePerson = async function(member){
 
   if(!isOwner){
-
     return;
-
   }
-
 
   if(member.owner){
-
     return;
-
   }
-
 
   if(
     !confirm(
@@ -2032,11 +1862,8 @@ window.removePerson = async function(member){
       " from MyChat?"
     )
   ){
-
     return;
-
   }
-
 
   try{
 
@@ -2047,7 +1874,6 @@ window.removePerson = async function(member){
         member.uid
       )
     );
-
 
     if(member.code){
 
@@ -2061,18 +1887,16 @@ window.removePerson = async function(member){
 
     }
 
-
     openMembers();
 
     renderMembers();
-
 
   }catch(error){
 
     console.error(error);
 
     alert(
-      "Firebase blocked the removal. The security rules need to be configured."
+      "Firebase blocked the removal."
     );
 
   }
@@ -2104,10 +1928,6 @@ window.openAdmin = function(){
 };
 
 
-/* =========================================================
-   LOCK
-   ========================================================= */
-
 window.lockApp = function(){
 
   const saved =
@@ -2116,7 +1936,6 @@ window.lockApp = function(){
         DEVICE_KEY
       ) || "null"
     );
-
 
   if(saved){
 
@@ -2139,10 +1958,6 @@ window.lockApp = function(){
 };
 
 
-/* =========================================================
-   RESET DEVICE
-   ========================================================= */
-
 window.resetThisDevice = function(){
 
   if(
@@ -2162,10 +1977,6 @@ window.resetThisDevice = function(){
 };
 
 
-/* =========================================================
-   HTML SAFETY
-   ========================================================= */
-
 function escapeHtml(value){
 
   return String(value)
@@ -2184,17 +1995,12 @@ function escapeHtml(value){
 }
 
 
-/* =========================================================
-   START
-   ========================================================= */
-
 async function init(){
 
   const saved =
     localStorage.getItem(
       DEVICE_KEY
     );
-
 
   if(saved){
 
@@ -2210,7 +2016,6 @@ async function init(){
     show("joinScreen");
 
   }
-
 
   await startFirebase();
 
